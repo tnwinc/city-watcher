@@ -16,21 +16,28 @@
 
   threeDaysAgo = moment().subtract('days', 12).format('YYYYMMDDTHHmmssZZ')
 
-  allBuildTypes = for server in serversToMonitor
+  allBuildTypes = {}
+
+  for server in serversToMonitor
     for buildType in server.buildTypes
+      allBuildTypes[buildType] = 
       {
         urlForRunningBuilds: "#{server.protocol}://#{server.address}/app/rest/builds?locator=running:all,branch:branched:any,buildType:#{buildType},sinceDate:#{threeDaysAgo}",
         urlForSpecificBuild: "#{server.protocol}://#{server.address}/app/rest/builds/id:",
-        id: buildType
+        name: "master - unknown"
       }
 
-  allBuildTypes = [].concat allBuildTypes...
+  console.log allBuildTypes
+
 
   createBuildList = ->
     serversProjection = for server in serversToMonitor
       buildConfigurations = for buildType in server.buildTypes
         $.getJSON "#{server.protocol}://#{server.address}/app/rest/buildTypes/id:#{buildType}", (data) -> 
           $("##{data.id} h2").text data.name
+          buildTypeToUpdate = allBuildTypes[data.id]
+          allBuildTypes[data.id] = { urlForRunningBuilds: buildTypeToUpdate.urlForRunningBuilds, urlForSpecificBuild: buildTypeToUpdate.urlForSpecificBuild, name: data.name }
+          console.log buildTypeToUpdate
         {
           id: buildType,
           name: buildType
@@ -46,39 +53,33 @@
     document.body.innerHTML = html
 
   updateServerList = ->
-    body = $('body')
-    body.removeClass()
-    for buildType in allBuildTypes
-      do (buildType) ->
+    for buildTypeId, buildType of allBuildTypes
+      do (buildTypeId, buildType) ->
         $.getJSON buildType.urlForRunningBuilds, (data) ->
           builds = {}
           for build in data.build
-            buildKey = build.branchName or buildType.id
+            buildKey = build.branchName or buildTypeId
             if not builds[buildKey]?
-              builds[buildKey] = { isBranchBuildType: not builds[build.branchName]?, buildType: buildType, build: build }
+              builds[buildKey] = { buildType: buildType, build: build }
 
           buildProjection = for O_o, buildInfo of builds
             running = buildInfo.build.running
-            branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then "master" else buildInfo.build.branchName
+            branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then buildType.name else buildInfo.build.branchName
 
             if running
               do (buildType, branchName) ->
                 $.getJSON buildType.urlForSpecificBuild + buildInfo.build.id, (data) ->
                   console.log data
-                  $("##{buildType.id} ul li.branch-name-#{branchName} h4#status-text").text data.statusText
-                  $("##{buildType.id} ul li.branch-name-#{branchName} h4#stage-text").text data["running-info"].currentStageText
-
-            status = buildInfo.build.status.toLowerCase()
-            body.addClass(status)
-            console.log "inloop", status
+                  $("##{buildTypeId} ul li.branch-name-#{branchName} h4#status-text").text data.statusText
+                  $("##{buildTypeId} ul li.branch-name-#{branchName} h4#stage-text").text data["running-info"].currentStageText
             {
-              status: status, 
+              status: buildInfo.build.status.toLowerCase(), 
               name: branchName, 
               percentageComplete: buildInfo.build.percentageComplete or "100", 
               running: if running then "running" else "not-running"
             }
 
-          $("##{buildType.id} ul").html branchBuildTemplate {builds: buildProjection}
+          $("##{buildTypeId} ul").html branchBuildTemplate {builds: buildProjection}
 
   $ -> 
     createBuildList()
@@ -97,8 +98,9 @@
       border: 0 none;
       outline: 0;
       padding: 0;
-      margin: 0
-;    }
+      margin: 0;
+      list-style: none;
+    }
 
     body {
       background-color: #CCC;
@@ -132,11 +134,14 @@
       background-color: #AAA;
     }
 
-    li #status-text.running {
+    li #status-text.running,
+    li #stage-text.running {
       display: block;
+      min-height: 25px;
     }
 
-    li #status-text.not-running {
+    li #status-text.not-running,
+    li #stage-text.not-running {
       display: none;
     }
 
@@ -159,6 +164,14 @@
     h4.running {
       min-height: 25px;
     }
+
+    .server-name {
+      display: none;
+    }
+
+    .build-list h2 {
+      display: none;
+    }
   </style>
   <script id="branchBuildList" type="text/x-handlebars-template">
       {{#each builds}}
@@ -172,27 +185,18 @@
       {{/each}}
   </script>
 
-
   <body>
     <script id="serverList" type="text/x-handlebars-template">
-      <ul>
         {{#each servers}}
-        <li>
-          <h1>{{this.friendlyName}}</h1>
-          <ul>
+          <ul id="server-{{this.friendlyName}}">
             {{#each this.buildConfigurations}}
-            <li id="{{this.id}}">
-              <h2>
-                {{this.name}}
-              </h2>
-              <ul class="build-status">
+            <li id="{{this.id}}" class="build-list">
+              <ul id="{{this.id}}" class="build-status">
               </ul>
             </li>
             {{/each}}
           </ul>
-        </li>
         {{/each}}
-      </ul>
     </script>
   </body>
 </head>
