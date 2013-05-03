@@ -1,0 +1,1 @@
+Version of app running here: http://citywatcher.azurewebsites.net/watcher.html
