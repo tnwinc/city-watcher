@@ -78,7 +78,7 @@
           else
             buildProjection = 
             [{
-                status: "unknown",
+                status: "no-recent-builds",
                 name: "#{buildType.name or buildTypeId}-No Recent Builds",
                 percentageComplete: 100,
                 running: false
@@ -120,15 +120,11 @@
     }
 
     h1 {
-      font: bold 22px "Helvetica", sans-serif;
+      font: 22px "Helvetica", sans-serif;
     }
 
     h2 {
       font: 20px "Helvetica", sans-serif;
-    }
-
-    li.status-success div {
-      background-color: #009933;
     }
 
     ul.build-status li {
@@ -141,6 +137,11 @@
       border-radius: 10px;
       white-space: nowrap;
       font: normal 28px "Helvetica", sans-serif;
+      box-shadow: inset 0 0 15px #333;
+    }
+
+    li.status-success div {
+      background-color: #009933;
     }
 
     li.status-failure div {
@@ -149,7 +150,11 @@
 
     li.status-unknown div {
       background-color: #AAA;
-      font-size: 16px;
+    }
+
+    li.status-no-recent-builds div {
+      font-size: 18px;
+      background-color: #B8B800;
     }
 
     li #status-text.running,
