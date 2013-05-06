@@ -24,7 +24,7 @@
       {
         urlForRunningBuilds: "#{server.protocol}://#{server.address}/app/rest/builds?locator=running:all,branch:branched:any,buildType:#{buildType},sinceDate:#{threeDaysAgo}",
         urlForSpecificBuild: "#{server.protocol}://#{server.address}/app/rest/builds/id:",
-        name: "master - #{buildType}"
+        name: "master-#{buildType}"
       }
 
   createBuildList = ->
@@ -79,7 +79,7 @@
             buildProjection = 
             [{
                 status: "unknown",
-                name: "No Recent Builds for #{buildType.name or buildTypeId}",
+                name: "#{buildType.name or buildTypeId}-No Recent Builds",
                 percentageComplete: 100,
                 running: false
             }]
@@ -124,11 +124,23 @@
     }
 
     h2 {
-      font: bold 20px "Helvetica", sans-serif;
+      font: 20px "Helvetica", sans-serif;
     }
 
     li.status-success div {
       background-color: #009933;
+    }
+
+    ul.build-status li {
+      padding: 2px;
+    }
+
+    li.build-info div {
+      padding: 2px;
+      border: solid thin black;
+      border-radius: 10px;
+      white-space: nowrap;
+      font: normal 28px "Helvetica", sans-serif;
     }
 
     li.status-failure div {
@@ -137,6 +149,7 @@
 
     li.status-unknown div {
       background-color: #AAA;
+      font-size: 16px;
     }
 
     li #status-text.running,
@@ -148,18 +161,6 @@
     li #status-text.not-running,
     li #stage-text.not-running {
       display: none;
-    }
-
-    ul.build-status li {
-      padding: 2px;
-    }
-
-    ul.build-status li.build-info div {
-      padding: 2px;
-      border: solid thin black;
-      border-radius: 10px;
-      white-space: nowrap;
-      font: normal 28px "Helvetica", sans-serif;
     }
 
     h4 {
