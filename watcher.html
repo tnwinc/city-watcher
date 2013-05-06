@@ -27,9 +27,6 @@
         name: "master - #{buildType}"
       }
 
-  console.log allBuildTypes
-
-
   createBuildList = ->
     serversProjection = for server in serversToMonitor
       buildConfigurations = for buildType in server.buildTypes
@@ -37,7 +34,6 @@
           $("##{data.id} h2").text data.name
           buildTypeToUpdate = allBuildTypes[data.id]
           allBuildTypes[data.id] = { urlForRunningBuilds: buildTypeToUpdate.urlForRunningBuilds, urlForSpecificBuild: buildTypeToUpdate.urlForSpecificBuild, name: data.name }
-          console.log buildTypeToUpdate
         {
           id: buildType,
           name: buildType
@@ -69,7 +65,6 @@
             if running
               do (buildType, branchName) ->
                 $.getJSON buildType.urlForSpecificBuild + buildInfo.build.id, (data) ->
-                  console.log data
                   $("##{buildTypeId} ul li.branch-name-#{branchName} h4#status-text").text data.statusText
                   $("##{buildTypeId} ul li.branch-name-#{branchName} h4#stage-text").text data["running-info"].currentStageText
             {
