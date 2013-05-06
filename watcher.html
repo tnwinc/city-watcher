@@ -14,7 +14,7 @@
   branchListSource = $('#branchBuildList').html()
   branchBuildTemplate = Handlebars.compile branchListSource
 
-  threeDaysAgo = moment().subtract('days', 12).format('YYYYMMDDTHHmmssZZ')
+  threeDaysAgo = moment().subtract('days', 3).format('YYYYMMDDTHHmmssZZ')
 
   allBuildTypes = {}
 
@@ -24,7 +24,7 @@
       {
         urlForRunningBuilds: "#{server.protocol}://#{server.address}/app/rest/builds?locator=running:all,branch:branched:any,buildType:#{buildType},sinceDate:#{threeDaysAgo}",
         urlForSpecificBuild: "#{server.protocol}://#{server.address}/app/rest/builds/id:",
-        name: "master - unknown"
+        name: "master - #{buildType}"
       }
 
   console.log allBuildTypes
