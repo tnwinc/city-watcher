@@ -53,26 +53,36 @@
       do (buildTypeId, buildType) ->
         $.getJSON buildType.urlForRunningBuilds, (data) ->
           builds = {}
-          for build in data.build
-            buildKey = build.branchName or buildTypeId
-            if not builds[buildKey]?
-              builds[buildKey] = { buildType: buildType, build: build }
 
-          buildProjection = for O_o, buildInfo of builds
-            running = buildInfo.build.running
-            branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then buildType.name else buildInfo.build.branchName
+          if data.count > 0        
+            for build in data.build
+              buildKey = build.branchName or buildTypeId
+              if not builds[buildKey]?
+                builds[buildKey] = { buildType: buildType, build: build }
 
-            if running
-              do (buildType, branchName) ->
-                $.getJSON buildType.urlForSpecificBuild + buildInfo.build.id, (data) ->
-                  $("##{buildTypeId} ul li.branch-name-#{branchName} h4#status-text").text data.statusText
-                  $("##{buildTypeId} ul li.branch-name-#{branchName} h4#stage-text").text data["running-info"].currentStageText
-            {
-              status: buildInfo.build.status.toLowerCase(), 
-              name: branchName, 
-              percentageComplete: buildInfo.build.percentageComplete or "100", 
-              running: if running then "running" else "not-running"
-            }
+            buildProjection = for O_o, buildInfo of builds
+              running = buildInfo.build.running
+              branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then buildType.name else buildInfo.build.branchName
+
+              if running
+                do (buildType, branchName) ->
+                  $.getJSON buildType.urlForSpecificBuild + buildInfo.build.id, (data) ->
+                    $("##{buildTypeId} ul li.branch-name-#{branchName} h4#status-text").text data.statusText
+                    $("##{buildTypeId} ul li.branch-name-#{branchName} h4#stage-text").text data["running-info"].currentStageText
+              {
+                status: buildInfo.build.status.toLowerCase(), 
+                name: branchName, 
+                percentageComplete: buildInfo.build.percentageComplete or (if running then 0 else 100), 
+                running: if running then "running" else "not-running"
+              }
+          else
+            buildProjection = 
+            [{
+                status: "unknown",
+                name: "No Recent Builds for #{buildType.name or buildTypeId}",
+                percentageComplete: 100,
+                running: false
+            }]
 
           $("##{buildTypeId} ul").html branchBuildTemplate {builds: buildProjection}
 
