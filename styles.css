@@ -1,7 +1,8 @@
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img,a img{border:none;}address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}del,ins{text-decoration:none;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:baseline;}sub{vertical-align:baseline;}legend{color:#000;}
 
 body {
-  background-color: #d3d3d3;
+  background: #333;
+  color: #e3e3e3;
   font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
@@ -15,40 +16,61 @@ p {
 }
 
 .server {
+  border: solid 1px #434343;
+  border-radius: 3px;
+  /*color: #121212;*/
   margin: 10px 5px;
 }
 
 .build-status li {
-  margin: 5px;
+  background: #121212;
+  background: -webkit-linear-gradient(top, #191919, #232323);
+  background: linear-gradient(top, #191919, #232323);
+  /*border-top: solid 1px #434343;*/
 }
 
-.build-info div {
-  border: solid 1px rgba(0,0,0,0.2);
-  border-radius: 3px;
-  box-shadow: inset 1px 1px 5px rgba(0,0,0,0.4);
+.build-status div {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  overflow: hidden;
   padding: 5px 10px;
   white-space: nowrap;
   -webkit-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;
 }
 
+.build-status li:first-child {
+  border: none;
+}
+
+.build-status li:first-child,
+.build-status li:first-child div {
+  border-radius: 3px 3px 0 0;
+}
+
+.build-status li:last-child,
+.build-status li:last-child div {
+  border-radius: 0 0 3px 3px;
+}
+
 .status-success div {
-  background-color: #88BE4D;
+  background-color: #496624;
+  border-top: solid 1px #53702D;
 }
 
 .status-failure div {
-  background-color: #DD6363;
+  background-color: #973333;
+  border-top: solid 1px #AC4242;
 }
 
 .status-unknown div {
-  background-color: #b2b2b2;
+  background-color: #626262;
+  border-top: solid 1px #787878;
 }
 
 .status-no-recent-builds div {
-  font-size: 18px;
-  background-color: #D3D67C;
+  background-color: #7E7429;
+  border-top: solid 1px #8F8538;
 }
 
 .status-text,

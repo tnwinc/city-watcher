@@ -125,7 +125,7 @@
             buildProjection = [
               {
                 status: "no-recent-builds",
-                name: "" + (buildType.name || buildTypeId) + "-No Recent Builds",
+                name: buildType.name || buildTypeId,
                 percentageComplete: 100,
                 running: false
               }
@@ -141,19 +141,27 @@
   };
 
   runFixtureMode = function() {
-    var runningDiv, widthPercentage;
+    var runningDiv;
 
     $('#fixtures').show();
-    widthPercentage = 10;
     runningDiv = $('.running div');
     return setInterval(function() {
-      if (widthPercentage <= 90) {
-        widthPercentage += 10;
-      } else {
-        widthPercentage = 0;
-      }
-      return runningDiv.css({
-        width: "" + widthPercentage + "%"
+      return runningDiv.each(function() {
+        var $this, widthPercentage;
+
+        $this = $(this);
+        widthPercentage = parseInt($this.data('widthPercentage')) || 10;
+        if (widthPercentage === 100) {
+          widthPercentage = 0;
+        } else {
+          widthPercentage = widthPercentage += Math.floor(Math.random() * 20);
+          if (widthPercentage > 100) {
+            widthPercentage = 100;
+          }
+        }
+        return $this.data('widthPercentage', widthPercentage).css({
+          width: "" + widthPercentage + "%"
+        });
       });
     }, 1500);
   };

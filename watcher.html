@@ -9,7 +9,7 @@
 <body>
   <script id="branchBuildList" type="text/x-handlebars-template">
     {{#each builds}}
-      <li class="build-info status-{{this.status}} branch-name-{{this.name}} percentage-complete-{{this.percentageComplete}} {{this.running}}">
+      <li class="status-{{this.status}} branch-name-{{this.name}} percentage-complete-{{this.percentageComplete}} {{this.running}}">
         <div style="width: {{this.percentageComplete}}%">
           <h2>{{this.name}}</h2>
           <p class="status-text"></p>
@@ -48,6 +48,13 @@
               <p class="stage-text"></p>
             </div>
           </li>
+          <li class="build-info status-success not-running">
+            <div style="width: 100%">
+              <h2>Success</h2>
+              <p class="status-text"></p>
+              <p class="stage-text"></p>
+            </div>
+          </li>
           <li class="build-info status-failure not-running">
             <div style="width: 100%">
               <h2>Failure</h2>
@@ -58,6 +65,13 @@
           <li class="build-info status-unknown not-running">
             <div style="width: 100%">
               <h2>Unknown</h2>
+              <p class="status-text"></p>
+              <p class="stage-text"></p>
+            </div>
+          </li>
+          <li class="build-info status-no-recent-builds not-running">
+            <div style="width: 100%">
+              <h2>No Recent Builds</h2>
               <p class="status-text"></p>
               <p class="stage-text"></p>
             </div>
