@@ -15,34 +15,47 @@ p {
   line-height: 1.5;
 }
 
-.server {
+.servers {
   color: #c7c7c7;
   margin: 10px;
+}
+
+.server:first-child .build-list:first-child {
+  li:first-child,
+  li:first-child div {
+    border-radius: 3px 3px 0 0;
+  }
+}
+
+.server:last-child .build-list:last-child {
+  li:last-child,
+  li:last-child div {
+    border-radius: 0 0 3px 3px;
+  }
+}
+
+@-webkit-keyframes sheen {
+  0%   { background-position: -1000px 0; }
+  100% { background-position:  1500px 0; }
 }
 
 .build-status {
   li {
     background: #121212;
-    background: -webkit-linear-gradient(top, #191919, #232323);
-    background: linear-gradient(top, #191919, #232323);
+    background: -webkit-linear-gradient(top, #111, #292929);
+    background: linear-gradient(top, #111, #292929);
     overflow: hidden;
-
     &:first-child {
       border: none;
     }
-
-    &:first-child,
-    &:first-child div {
-      border-radius: 3px 3px 0 0;
-    }
-
-    &:last-child,
-    &:last-child div {
-      border-radius: 0 0 3px 3px;
-    }
   }
 
-  div {
+  .running .branch-wrap {
+    background: image-url('shine.png') no-repeat;
+    -webkit-animation: sheen 5s infinite;
+  }
+
+  .branch {
     border-top: solid 1px;
     border-bottom: solid 1px;
     -webkit-box-sizing: border-box;
@@ -54,31 +67,36 @@ p {
   }
 
   $success-base-color: #496624;
-  .status-success div {
+  .status-success .branch {
     background-color: $success-base-color;
     border-top-color: lighten($success-base-color, 10%);
     border-bottom-color: darken($success-base-color, 10%);
   }
 
   $failure-base-color: #973333;
-  .status-failure div {
+  .status-failure .branch {
     background-color: $failure-base-color;
     border-top-color: lighten($failure-base-color, 10%);
     border-bottom-color: darken($failure-base-color, 10%);
   }
 
   $unknown-base-color: #626262;
-  .status-unknown div {
+  .status-unknown .branch {
     background-color: $unknown-base-color;
     border-top-color: lighten($unknown-base-color, 10%);
     border-bottom-color: darken($unknown-base-color, 10%);
   }
 
   $no-recent-base-color: #434343;
-  .status-no-recent-builds div {
+  .status-no-recent-builds .branch {
     background-color: $no-recent-base-color;
     border-top-color: lighten($no-recent-base-color, 10%);
     border-bottom-color: darken($no-recent-base-color, 10%);
+
+    h2 {
+      font-size: 16px;
+      opacity: 0.6;
+    }
   }
 }
 

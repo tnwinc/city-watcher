@@ -83,7 +83,7 @@ updateServerList = ->
 
 runFixtureMode = ->
   $('#fixtures').show()
-  runningDiv = $('.running div')
+  runningDiv = $('.running .branch')
   setInterval ->
     runningDiv.each ->
       $this = $(this)

@@ -87,32 +87,53 @@ p {
 }
 
 /* line 18, styles.scss */
-.server {
+.servers {
   color: #c7c7c7;
   margin: 10px;
 }
 
-/* line 24, styles.scss */
+/* line 25, styles.scss */
+.server:first-child .build-list:first-child li:first-child,
+.server:first-child .build-list:first-child li:first-child div {
+  border-radius: 3px 3px 0 0;
+}
+
+/* line 32, styles.scss */
+.server:last-child .build-list:last-child li:last-child,
+.server:last-child .build-list:last-child li:last-child div {
+  border-radius: 0 0 3px 3px;
+}
+
+@-webkit-keyframes sheen {
+  /* line 38, styles.scss */
+  0% {
+    background-position: -1000px 0;
+  }
+
+  /* line 39, styles.scss */
+  100% {
+    background-position: 1500px 0;
+  }
+}
+
+/* line 43, styles.scss */
 .build-status li {
   background: #121212;
-  background: -webkit-linear-gradient(top, #191919, #232323);
-  background: linear-gradient(top, #191919, #232323);
+  background: -webkit-linear-gradient(top, #111111, #292929);
+  background: linear-gradient(top, #111111, #292929);
   overflow: hidden;
 }
-/* line 30, styles.scss */
+/* line 48, styles.scss */
 .build-status li:first-child {
   border: none;
 }
-/* line 35, styles.scss */
-.build-status li:first-child, .build-status li:first-child div {
-  border-radius: 3px 3px 0 0;
+/* line 53, styles.scss */
+.build-status .running .branch-wrap {
+  background: url('shine.png?1368043686') no-repeat;
+  -webkit-animation: sheen 5s infinite;
 }
-/* line 40, styles.scss */
-.build-status li:last-child, .build-status li:last-child div {
-  border-radius: 0 0 3px 3px;
-}
-/* line 45, styles.scss */
-.build-status div {
+/* line 58, styles.scss */
+.build-status .branch {
   border-top: solid 1px;
   border-bottom: solid 1px;
   -webkit-box-sizing: border-box;
@@ -122,52 +143,57 @@ p {
   -webkit-transition: all 1s ease-in-out;
   transition: all 1s ease-in-out;
 }
-/* line 57, styles.scss */
-.build-status .status-success div {
+/* line 70, styles.scss */
+.build-status .status-success .branch {
   background-color: #496624;
   border-top-color: #648c31;
   border-bottom-color: #2e4017;
 }
-/* line 64, styles.scss */
-.build-status .status-failure div {
+/* line 77, styles.scss */
+.build-status .status-failure .branch {
   background-color: #973333;
   border-top-color: #bd4040;
   border-bottom-color: #712626;
 }
-/* line 71, styles.scss */
-.build-status .status-unknown div {
+/* line 84, styles.scss */
+.build-status .status-unknown .branch {
   background-color: #626262;
   border-top-color: #7c7c7c;
   border-bottom-color: #494949;
 }
-/* line 78, styles.scss */
-.build-status .status-no-recent-builds div {
+/* line 91, styles.scss */
+.build-status .status-no-recent-builds .branch {
   background-color: #434343;
   border-top-color: #5d5d5d;
   border-bottom-color: #2a2a2a;
 }
+/* line 96, styles.scss */
+.build-status .status-no-recent-builds .branch h2 {
+  font-size: 16px;
+  opacity: 0.6;
+}
 
-/* line 86, styles.scss */
+/* line 104, styles.scss */
 .status-text,
 .stage-text {
   opacity: 0.5;
 }
-/* line 89, styles.scss */
+/* line 107, styles.scss */
 .not-running .status-text, .not-running
 .stage-text {
   display: none;
 }
 
-/* line 94, styles.scss */
+/* line 112, styles.scss */
 .fixtures {
   display: none;
 }
 
-/* line 98, styles.scss */
+/* line 116, styles.scss */
 .fixture-mode-message {
   padding: 10px;
 }
-/* line 101, styles.scss */
+/* line 119, styles.scss */
 .fixture-mode-message p {
   opacity: 0.6;
 }
