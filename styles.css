@@ -69,3 +69,11 @@ p {
 .fixtures {
   display: none;
 }
+
+.fixture-mode-message {
+  padding: 10px;
+}
+
+.fixture-mode-message p {
+  opacity: 0.6;
+}

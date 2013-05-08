@@ -33,53 +33,58 @@
   </script>
 
   <div id="fixtures" class="fixtures">
-      <ul id="server-one" class="server">
-        <li id="some-id-1" class="build-list">
-          <ul id="some-id-1" class="build-status">
-            <li class="build-info status-success not-running">
-              <div style="width: 100%">
-                <h2>Success</h2>
-                <p class="status-text"></p>
-                <p class="stage-text"></p>
-              </div>
-            </li>
-            <li class="build-info status-failure not-running">
-              <div style="width: 100%">
-                <h2>Failure</h2>
-                <p class="status-text"></p>
-                <p class="stage-text"></p>
-              </div>
-            </li>
-            <li class="build-info status-unknown not-running">
-              <div style="width: 100%">
-                <h2>Unknown</h2>
-                <p class="status-text"></p>
-                <p class="stage-text"></p>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <ul id="server-two" class="server">
-        <li id="some-id-2" class="build-list">
-          <ul id="some-id-2" class="build-status">
-            <li class="build-info status-success running">
-              <div style="width: 10%">
-                <h2>Running - succeeding</h2>
-                <p class="status-text">Some status text</p>
-                <p class="stage-text">Some stage text</p>
-              </div>
-            </li>
-            <li class="build-info status-failure running">
-              <div style="width: 10%">
-                <h2>Running - failing</h2>
-                <p class="status-text">Some status text</p>
-                <p class="stage-text">Some stage text</p>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class="fixture-mode-message">
+      <h2>Fixture Mode</h2>
+      <p>Provide proper JSON in the URL to exit fixture mode</p>
+    </div>
+
+    <ul id="server-one" class="server">
+      <li id="some-id-1" class="build-list">
+        <ul id="some-id-1" class="build-status">
+          <li class="build-info status-success not-running">
+            <div style="width: 100%">
+              <h2>Success</h2>
+              <p class="status-text"></p>
+              <p class="stage-text"></p>
+            </div>
+          </li>
+          <li class="build-info status-failure not-running">
+            <div style="width: 100%">
+              <h2>Failure</h2>
+              <p class="status-text"></p>
+              <p class="stage-text"></p>
+            </div>
+          </li>
+          <li class="build-info status-unknown not-running">
+            <div style="width: 100%">
+              <h2>Unknown</h2>
+              <p class="status-text"></p>
+              <p class="stage-text"></p>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul id="server-two" class="server">
+      <li id="some-id-2" class="build-list">
+        <ul id="some-id-2" class="build-status">
+          <li class="build-info status-success running">
+            <div style="width: 10%">
+              <h2>Running - succeeding</h2>
+              <p class="status-text">Some status text</p>
+              <p class="stage-text">Some stage text</p>
+            </div>
+          </li>
+          <li class="build-info status-failure running">
+            <div style="width: 10%">
+              <h2>Running - failing</h2>
+              <p class="status-text">Some status text</p>
+              <p class="stage-text">Some stage text</p>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
 
   <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
