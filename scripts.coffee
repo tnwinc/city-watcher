@@ -1,23 +1,26 @@
-serversToMonitor = JSON.parse(window.location.hash[1..])
+hash = window.location.hash
 
-serverListSource = $('#serverList').html()
-serverListTemplate = Handlebars.compile serverListSource
+if hash
 
-branchListSource = $('#branchBuildList').html()
-branchBuildTemplate = Handlebars.compile branchListSource
+  serversToMonitor = JSON.parse hash[1..]
+  serverListSource = $('#serverList').html()
+  serverListTemplate = Handlebars.compile serverListSource
 
-threeDaysAgo = moment().subtract('days', 3).format('YYYYMMDDTHHmmssZZ')
+  branchListSource = $('#branchBuildList').html()
+  branchBuildTemplate = Handlebars.compile branchListSource
 
-allBuildTypes = {}
+  threeDaysAgo = moment().subtract('days', 3).format('YYYYMMDDTHHmmssZZ')
 
-for server in serversToMonitor
-  for buildType in server.buildTypes
-    allBuildTypes[buildType] =
-    {
-      urlForRunningBuilds: "#{server.protocol}://#{server.address}/app/rest/builds?locator=running:all,branch:branched:any,buildType:#{buildType},sinceDate:#{threeDaysAgo}",
-      urlForSpecificBuild: "#{server.protocol}://#{server.address}/app/rest/builds/id:",
-      name: "master-#{buildType}"
-    }
+  allBuildTypes = {}
+
+  for server in serversToMonitor
+    for buildType in server.buildTypes
+      allBuildTypes[buildType] =
+      {
+        urlForRunningBuilds: "#{server.protocol}://#{server.address}/app/rest/builds?locator=running:all,branch:branched:any,buildType:#{buildType},sinceDate:#{threeDaysAgo}",
+        urlForSpecificBuild: "#{server.protocol}://#{server.address}/app/rest/builds/id:",
+        name: "master-#{buildType}"
+      }
 
 createBuildList = ->
   serversProjection = for server in serversToMonitor
@@ -59,26 +62,41 @@ updateServerList = ->
             if running
               do (buildType, branchName)->
                 $.getJSON buildType.urlForSpecificBuild + buildInfo.build.id, (data)->
-                  $("##{buildTypeId} ul li.branch-name-#{branchName} h4#status-text").text data.statusText
-                  $("##{buildTypeId} ul li.branch-name-#{branchName} h4#stage-text").text data["running-info"].currentStageText
+                  $("##{buildTypeId} .branch-name-#{branchName} .status-text").text data.statusText
+                  $("##{buildTypeId} .branch-name-#{branchName} .stage-text").text data["running-info"].currentStageText
             {
-              status: buildInfo.build.status.toLowerCase(),
-              name: branchName,
-              percentageComplete: buildInfo.build.percentageComplete or (if running then 0 else 100),
+              status: buildInfo.build.status.toLowerCase()
+              name: branchName
+              percentageComplete: buildInfo.build.percentageComplete or (if running then 0 else 100)
               running: if running then "running" else "not-running"
             }
         else
           buildProjection =
           [{
-              status: "no-recent-builds",
-              name: "#{buildType.name or buildTypeId}-No Recent Builds",
-              percentageComplete: 100,
+              status: "no-recent-builds"
+              name: "#{buildType.name or buildTypeId}-No Recent Builds"
+              percentageComplete: 100
               running: false
           }]
 
         $("##{buildTypeId} ul").html branchBuildTemplate {builds: buildProjection}
 
+runFixtureMode = ->
+  $('#fixtures').show()
+  widthPercentage = 10;
+  runningDiv = $('.running div')
+  setInterval ->
+    if widthPercentage <= 90
+      widthPercentage += 10
+    else
+      widthPercentage = 0
+    runningDiv.css width: "#{widthPercentage}%"
+  , 1500
+
 $ ->
-  createBuildList()
-  updateServerList()
-  setInterval(updateServerList, 5000)
+  if hash
+    createBuildList()
+    updateServerList()
+    setInterval(updateServerList, 5000)
+  else
+    runFixtureMode()
