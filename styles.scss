@@ -35,8 +35,8 @@ p {
 }
 
 @-webkit-keyframes sheen {
-  0%   { background-position: -1000px 0; }
-  100% { background-position:  1500px 0; }
+  0%   { background-position: -300px 0; }
+  100% { background-position:  4000px 0; }
 }
 
 .build-status {
@@ -52,7 +52,7 @@ p {
 
   .running .branch-wrap {
     background: image-url('shine.png') no-repeat;
-    -webkit-animation: sheen 5s infinite;
+    -webkit-animation: sheen 10s infinite;
   }
 
   .branch {

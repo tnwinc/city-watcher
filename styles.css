@@ -107,12 +107,12 @@ p {
 @-webkit-keyframes sheen {
   /* line 38, styles.scss */
   0% {
-    background-position: -1000px 0;
+    background-position: -300px 0;
   }
 
   /* line 39, styles.scss */
   100% {
-    background-position: 1500px 0;
+    background-position: 4000px 0;
   }
 }
 
@@ -130,7 +130,7 @@ p {
 /* line 53, styles.scss */
 .build-status .running .branch-wrap {
   background: url('shine.png?1368043686') no-repeat;
-  -webkit-animation: sheen 5s infinite;
+  -webkit-animation: sheen 10s infinite;
 }
 /* line 58, styles.scss */
 .build-status .branch {
