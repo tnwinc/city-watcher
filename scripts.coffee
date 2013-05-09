@@ -52,7 +52,7 @@ updateServerList = ->
         if data.count > 0
           for build in data.build
             buildKey = build.branchName or buildTypeId
-            if not builds[buildKey]?
+            if not builds[buildKey]? and build.status != "UNKNOWN"
               builds[buildKey] = { buildType: buildType, build: build }
 
           buildProjection = for O_o, buildInfo of builds
