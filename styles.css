@@ -146,26 +146,26 @@ p {
 /* line 70, styles.scss */
 .build-status .status-success .branch {
   background-color: #496624;
-  border-top-color: #648c31;
-  border-bottom-color: #2e4017;
+  border-top-color: #56792b;
+  border-bottom-color: #3c531d;
 }
 /* line 77, styles.scss */
 .build-status .status-failure .branch {
   background-color: #973333;
-  border-top-color: #bd4040;
-  border-bottom-color: #712626;
+  border-top-color: #aa3939;
+  border-bottom-color: #842d2d;
 }
 /* line 84, styles.scss */
 .build-status .status-unknown .branch {
   background-color: #626262;
-  border-top-color: #7c7c7c;
-  border-bottom-color: #494949;
+  border-top-color: #6f6f6f;
+  border-bottom-color: #555555;
 }
 /* line 91, styles.scss */
 .build-status .status-no-recent-builds .branch {
   background-color: #434343;
-  border-top-color: #5d5d5d;
-  border-bottom-color: #2a2a2a;
+  border-top-color: #505050;
+  border-bottom-color: #363636;
 }
 /* line 96, styles.scss */
 .build-status .status-no-recent-builds .branch h2 {

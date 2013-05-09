@@ -69,29 +69,29 @@ p {
   $success-base-color: #496624;
   .status-success .branch {
     background-color: $success-base-color;
-    border-top-color: lighten($success-base-color, 10%);
-    border-bottom-color: darken($success-base-color, 10%);
+    border-top-color: lighten($success-base-color, 5%);
+    border-bottom-color: darken($success-base-color, 5%);
   }
 
   $failure-base-color: #973333;
   .status-failure .branch {
     background-color: $failure-base-color;
-    border-top-color: lighten($failure-base-color, 10%);
-    border-bottom-color: darken($failure-base-color, 10%);
+    border-top-color: lighten($failure-base-color, 5%);
+    border-bottom-color: darken($failure-base-color, 5%);
   }
 
   $unknown-base-color: #626262;
   .status-unknown .branch {
     background-color: $unknown-base-color;
-    border-top-color: lighten($unknown-base-color, 10%);
-    border-bottom-color: darken($unknown-base-color, 10%);
+    border-top-color: lighten($unknown-base-color, 5%);
+    border-bottom-color: darken($unknown-base-color, 5%);
   }
 
   $no-recent-base-color: #434343;
   .status-no-recent-builds .branch {
     background-color: $no-recent-base-color;
-    border-top-color: lighten($no-recent-base-color, 10%);
-    border-bottom-color: darken($no-recent-base-color, 10%);
+    border-top-color: lighten($no-recent-base-color, 5%);
+    border-bottom-color: darken($no-recent-base-color, 5%);
 
     h2 {
       font-size: 16px;
