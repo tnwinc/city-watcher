@@ -124,7 +124,7 @@
             buildProjection = [
               {
                 status: "no-recent-builds",
-                name: buildType.name || buildTypeId,
+                name: "" + (buildType.name || buildTypeId) + " - No Recent Builds",
                 percentageComplete: 100,
                 running: false
               }

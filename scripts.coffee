@@ -74,7 +74,7 @@ updateServerList = ->
           buildProjection =
           [{
               status: "no-recent-builds"
-              name: buildType.name or buildTypeId
+              name: "#{buildType.name or buildTypeId} - No Recent Builds"
               percentageComplete: 100
               running: false
           }]

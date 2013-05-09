@@ -173,27 +173,32 @@ p {
   opacity: 0.6;
 }
 
-/* line 104, styles.scss */
+/* line 103, styles.scss */
+.running .branch {
+  min-height: 90px;
+}
+
+/* line 108, styles.scss */
 .status-text,
 .stage-text {
   opacity: 0.5;
 }
-/* line 107, styles.scss */
+/* line 111, styles.scss */
 .not-running .status-text, .not-running
 .stage-text {
   display: none;
 }
 
-/* line 112, styles.scss */
+/* line 116, styles.scss */
 .fixtures {
   display: none;
 }
 
-/* line 116, styles.scss */
+/* line 120, styles.scss */
 .fixture-mode-message {
   padding: 10px;
 }
-/* line 119, styles.scss */
+/* line 123, styles.scss */
 .fixture-mode-message p {
   opacity: 0.6;
 }

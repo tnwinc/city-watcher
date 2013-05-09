@@ -100,6 +100,10 @@ p {
   }
 }
 
+.running .branch {
+  min-height: 90px;
+}
+
 .status-text,
 .stage-text {
   opacity: 0.5;
