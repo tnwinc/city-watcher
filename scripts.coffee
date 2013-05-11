@@ -25,7 +25,7 @@ if hash
 createBuildList = ->
   serversProjection = for server in serversToMonitor
     buildConfigurations = for buildType in server.buildTypes
-      $.getJSON "#{server.protocol}://#{server.address}/app/rest/buildTypes/id:#{buildType}", (data)->
+      $.getJSON "#{server.protocol}://#{server.address}/app/rest/buildTypes/id:#{buildType}", (data) ->
         $("##{data.id} h2").text data.name
         buildTypeToUpdate = allBuildTypes[data.id]
         allBuildTypes[data.id] = { urlForRunningBuilds: buildTypeToUpdate.urlForRunningBuilds, urlForSpecificBuild: buildTypeToUpdate.urlForSpecificBuild, name: data.name }
@@ -57,6 +57,7 @@ updateServerList = ->
 
           buildProjection = for O_o, buildInfo of builds
             running = buildInfo.build.running
+            id = buildTypeId + buildInfo.build.branchName.replace /\//g, ''
             branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then buildType.name else buildInfo.build.branchName
 
             if running
@@ -65,6 +66,8 @@ updateServerList = ->
                   $("##{buildTypeId} .branch-name-#{branchName} .status-text").text data.statusText
                   $("##{buildTypeId} .branch-name-#{branchName} .stage-text").text data["running-info"].currentStageText
             {
+              id: id
+              buildTypeId: buildTypeId
               status: buildInfo.build.status.toLowerCase()
               name: branchName
               percentageComplete: buildInfo.build.percentageComplete or (if running then 0 else 100)
@@ -73,13 +76,33 @@ updateServerList = ->
         else
           buildProjection =
           [{
+              id: buildTypeId + "refsheadsmaster"
+              buildTypeId: buildTypeId
               status: "no-recent-builds"
               name: "#{buildType.name or buildTypeId} - No Recent Builds"
               percentageComplete: 100
-              running: false
+              running: "not-running"
           }]
 
-        $("##{buildTypeId} ul").html branchBuildTemplate {builds: buildProjection}
+        for build in buildProjection
+          if not $("##{build.id}").length
+            $("##{buildTypeId} ul").append branchBuildTemplate {builds: buildProjection}
+          li = $("##{build.buildTypeId} ul li.branch-name-#{build.name}")
+
+          statuses = ['failure', 'success', 'no-recent-builds']
+          li.addClass "status-#{build.status}"
+          li.removeClass status for status in statuses when status != build.status
+
+          if build.running == "running"
+            li
+              .removeClass('not-running')
+              .addClass('running')
+
+            li.find(".branch")
+              .width("#{build.percentageComplete - 20}%")
+          else
+            li.removeClass('running').addClass('not-running')
+
 
 runFixtureMode = ->
   $('#fixtures').show()
