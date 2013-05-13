@@ -98,15 +98,18 @@ updateServerList = ->
           li.addClass "status-#{build.status}"
           li.removeClass status for status in statuses when status != build.status
 
+          branch = li.find(".branch") 
+
           if build.running == "running"
             li
               .removeClass('not-running')
               .addClass('running')
 
-            li.find(".branch")
+            branch
               .width("#{build.percentageComplete - 20}%") #NO IDEA why I have to take away 20, but I do
           else
             li.removeClass('running').addClass('not-running')
+            branch.width("100%")
 
 
 runFixtureMode = ->

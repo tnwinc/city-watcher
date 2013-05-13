@@ -83,7 +83,7 @@
       buildType = allBuildTypes[buildTypeId];
       _results.push((function(buildTypeId, buildType) {
         return $.getJSON(buildType.urlForRunningBuilds, function(data) {
-          var O_o, branchName, build, buildDoesNotExist, buildInfo, buildKey, buildProjection, builds, displayName, id, li, running, status, statuses, _k, _l, _len2, _len3, _len4, _m, _ref1, _results1;
+          var O_o, branch, branchName, build, buildDoesNotExist, buildInfo, buildKey, buildProjection, builds, displayName, id, li, running, status, statuses, _k, _l, _len2, _len3, _len4, _m, _ref1, _results1;
 
           builds = {};
           if (data.count > 0) {
@@ -158,11 +158,13 @@
                 li.removeClass(status);
               }
             }
+            branch = li.find(".branch");
             if (build.running === "running") {
               li.removeClass('not-running').addClass('running');
-              _results1.push(li.find(".branch").width("" + (build.percentageComplete - 20) + "%"));
+              _results1.push(branch.width("" + (build.percentageComplete - 20) + "%"));
             } else {
-              _results1.push(li.removeClass('running').addClass('not-running'));
+              li.removeClass('running').addClass('not-running');
+              _results1.push(branch.width("100%"));
             }
           }
           return _results1;
