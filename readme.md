@@ -30,3 +30,5 @@ http://citywatcher.azurewebsites.net/watcher.html#[ { "protocol" : "http", "addr
 * Hiding of build names optional
 * Number of days to look back configurable in url
 * Add configuration UI
+* Add tests
+* Refactor data gathering bits to make it clearer
