@@ -96,7 +96,7 @@ updateServerList = ->
 
           statuses = ['failure', 'success', 'no-recent-builds']
           li.addClass "status-#{build.status}"
-          li.removeClass status for status in statuses when status != build.status
+          li.removeClass "status-#{build.status}" for status in statuses when status != build.status
 
           branch = li.find(".branch") 
 
