@@ -24,7 +24,7 @@
 
   <script id="branchBuildList" type="text/x-handlebars-template">
     {{#each builds}}
-      <li id="{{this.id}}" class="status-{{this.status}} branch-name-{{this.name}} percentage-complete-{{this.percentageComplete}} {{this.running}}">
+      <li id="{{this.id}}" class="status-{{this.status}} {{this.running}}">
         <div class="branch-wrap">
           <div class="branch" style="width: {{this.percentageComplete}}%">
             <h2>{{this.name}}</h2>
