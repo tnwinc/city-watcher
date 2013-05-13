@@ -24,7 +24,9 @@ http://citywatcher.azurewebsites.net/watcher.html#[ { "protocol" : "http", "addr
 ```
 
 #Upcoming Features
-* Make hiding of successful builds optional
-* Make hiding of stale builds optional
-* Make hiding of Server names optional
-* Make hiding of build names optional
+* Hiding of successful builds optional
+* Hiding of stale builds optional
+* Hiding of Server names optional
+* Hiding of build names optional
+* Number of days to look back configurable in url
+* Add configuration UI
