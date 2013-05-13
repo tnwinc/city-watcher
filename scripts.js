@@ -155,7 +155,7 @@
             for (_m = 0, _len4 = statuses.length; _m < _len4; _m++) {
               status = statuses[_m];
               if (status !== build.status) {
-                li.removeClass("status-" + build.status);
+                li.removeClass("status-" + status);
               }
             }
             branch = li.find(".branch");
