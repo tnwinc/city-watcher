@@ -83,7 +83,7 @@
       buildType = allBuildTypes[buildTypeId];
       _results.push((function(buildTypeId, buildType) {
         return $.getJSON(buildType.urlForRunningBuilds, function(data) {
-          var O_o, branch, branchName, build, buildDoesNotExist, buildInfo, buildKey, buildProjection, builds, displayName, id, li, running, status, statuses, _k, _l, _len2, _len3, _len4, _m, _ref1, _results1;
+          var O_o, branch, branchName, build, buildDoesNotExist, buildInfo, buildKey, buildProjection, builds, displayName, id, li, running, status, statuses, ul, _k, _l, _len2, _len3, _len4, _len5, _m, _n, _ref1, _results1;
 
           builds = {};
           if (data.count > 0) {
@@ -142,6 +142,7 @@
           _results1 = [];
           for (_l = 0, _len3 = buildProjection.length; _l < _len3; _l++) {
             build = buildProjection[_l];
+            ul = $("#" + build.buildTypeId);
             buildDoesNotExist = !$("#" + build.id).length;
             if (buildDoesNotExist) {
               $("#" + buildTypeId + " ul").append(branchBuildTemplate({
@@ -152,18 +153,27 @@
             li.find('h2').text(build.name);
             statuses = ['failure', 'success', 'no-recent-builds'];
             li.addClass("status-" + build.status);
+            ul.addClass("status-" + build.status);
             for (_m = 0, _len4 = statuses.length; _m < _len4; _m++) {
               status = statuses[_m];
               if (status !== build.status) {
                 li.removeClass("status-" + status);
               }
             }
+            for (_n = 0, _len5 = statuses.length; _n < _len5; _n++) {
+              status = statuses[_n];
+              if (status !== build.status) {
+                ul.removeClass("status-" + status);
+              }
+            }
             branch = li.find(".branch");
             if (build.running === "running") {
               li.removeClass('not-running').addClass('running');
+              ul.removeClass('not-running').addClass('running');
               _results1.push(branch.width("" + (build.percentageComplete - 20) + "%"));
             } else {
               li.removeClass('running').addClass('not-running');
+              ul.removeClass('running').addClass('not-running');
               _results1.push(branch.width("100%"));
             }
           }
