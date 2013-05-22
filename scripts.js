@@ -83,7 +83,7 @@
       buildType = allBuildTypes[buildTypeId];
       _results.push((function(buildTypeId, buildType) {
         return $.getJSON(buildType.urlForRunningBuilds, function(data) {
-          var O_o, branch, branchName, build, buildDoesNotExist, buildInfo, buildKey, buildProjection, builds, displayName, id, li, running, status, statuses, _k, _l, _len2, _len3, _len4, _m, _ref1, _results1;
+          var O_o, branch, branchName, build, buildDoesNotExist, buildInfo, buildKey, buildProjection, builds, displayName, id, liForBuildType, liForSpecificBuild, running, status, statuses, _k, _l, _len2, _len3, _len4, _len5, _m, _n, _ref1, _results1;
 
           builds = {};
           if (data.count > 0) {
@@ -142,28 +142,38 @@
           _results1 = [];
           for (_l = 0, _len3 = buildProjection.length; _l < _len3; _l++) {
             build = buildProjection[_l];
-            buildDoesNotExist = !$("#" + build.id).length;
+            buildDoesNotExist = $("#" + build.id).length < 1;
             if (buildDoesNotExist) {
               $("#" + buildTypeId + " ul").append(branchBuildTemplate({
                 builds: buildProjection
               }));
             }
-            li = $("#" + build.id);
-            li.find('h2').text(build.name);
+            liForBuildType = $("#" + build.buildTypeId);
+            liForSpecificBuild = $("#" + build.id);
+            liForSpecificBuild.find('h2').text(build.name);
             statuses = ['failure', 'success', 'no-recent-builds'];
-            li.addClass("status-" + build.status);
+            liForSpecificBuild.addClass("status-" + build.status);
+            liForBuildType.addClass("status-" + build.status);
             for (_m = 0, _len4 = statuses.length; _m < _len4; _m++) {
               status = statuses[_m];
               if (status !== build.status) {
-                li.removeClass("status-" + status);
+                liForSpecificBuild.removeClass("status-" + status);
               }
             }
-            branch = li.find(".branch");
+            for (_n = 0, _len5 = statuses.length; _n < _len5; _n++) {
+              status = statuses[_n];
+              if (status !== build.status) {
+                liForBuildType.removeClass("status-" + status);
+              }
+            }
+            branch = liForSpecificBuild.find(".branch");
             if (build.running === "running") {
               li.removeClass('not-running').addClass('running');
+              liForBuildType.removeClass('not-running').addClass('running');
               _results1.push(branch.width("" + (build.percentageComplete - 20) + "%"));
             } else {
-              li.removeClass('running').addClass('not-running');
+              liForSpecificBuild.removeClass('running').addClass('not-running');
+              liForBuildType.removeClass('running').addClass('not-running');
               _results1.push(branch.width("100%"));
             }
           }

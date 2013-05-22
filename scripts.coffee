@@ -87,28 +87,36 @@ updateServerList = ->
           }]
 
         for build in buildProjection
-          buildDoesNotExist = not $("##{build.id}").length
+          buildDoesNotExist = $("##{build.id}").length < 1
           if buildDoesNotExist
             $("##{buildTypeId} ul").append branchBuildTemplate {builds: buildProjection}
-          li = $("##{build.id}")
 
-          li.find('h2').text build.name
+          liForBuildType = $("##{build.buildTypeId}")
+          liForSpecificBuild = $("##{build.id}")
+
+          liForSpecificBuild.find('h2').text build.name
 
           statuses = ['failure', 'success', 'no-recent-builds']
-          li.addClass "status-#{build.status}"
-          li.removeClass "status-#{status}" for status in statuses when status != build.status
+          liForSpecificBuild.addClass "status-#{build.status}"
+          liForBuildType.addClass "status-#{build.status}"
+          liForSpecificBuild.removeClass "status-#{status}" for status in statuses when status != build.status
+          liForBuildType.removeClass "status-#{status}" for status in statuses when status != build.status
 
-          branch = li.find(".branch") 
+          branch = liForSpecificBuild.find(".branch") 
 
           if build.running == "running"
             li
+              .removeClass('not-running')
+              .addClass('running')
+            liForBuildType
               .removeClass('not-running')
               .addClass('running')
 
             branch
               .width("#{build.percentageComplete - 20}%") #NO IDEA why I have to take away 20, but I do
           else
-            li.removeClass('running').addClass('not-running')
+            liForSpecificBuild.removeClass('running').addClass('not-running')
+            liForBuildType.removeClass('running').addClass('not-running')
             branch.width("100%")
 
 
