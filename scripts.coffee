@@ -8,7 +8,7 @@ if hash
   branchListSource = $('#branchBuildList').html()
   branchBuildTemplate = Handlebars.compile branchListSource
 
-  daysToLookBack = moment().subtract('days', 3).format('YYYYMMDDTHHmmssZZ')
+  daysToLookBack = (moment().subtract 'days', 3).format 'YYYYMMDDTHHmmssZZ'
 
   allBuildTypes = {}
 
@@ -91,23 +91,17 @@ updateServerList = ->
           if buildDoesNotExist
             $("##{buildTypeId} ul").append branchBuildTemplate {builds: buildProjection}
 
-          liForBuildType = $("##{build.buildTypeId}")
           liForSpecificBuild = $("##{build.id}")
 
           liForSpecificBuild.find('h2').text build.name
 
           statuses = ['failure', 'success', 'no-recent-builds']
           liForSpecificBuild.addClass "status-#{build.status}"
-          liForBuildType.addClass "status-#{build.status}"
           liForSpecificBuild.removeClass "status-#{status}" for status in statuses when status != build.status
-          liForBuildType.removeClass "status-#{status}" for status in statuses when status != build.status
 
           branch = liForSpecificBuild.find(".branch") 
 
           if build.running == "running"
-            liForBuildType
-              .removeClass('not-running')
-              .addClass('running')
             liForSpecificBuild
               .removeClass('not-running')
               .addClass('running')
@@ -116,7 +110,6 @@ updateServerList = ->
               .width("#{build.percentageComplete - 20}%") #NO IDEA why I have to take away 20, but I do
           else
             liForSpecificBuild.removeClass('running').addClass('not-running')
-            liForBuildType.removeClass('running').addClass('not-running')
             branch.width("100%")
 
 

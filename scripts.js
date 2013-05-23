@@ -10,7 +10,7 @@
     serverListTemplate = Handlebars.compile(serverListSource);
     branchListSource = $('#branchBuildList').html();
     branchBuildTemplate = Handlebars.compile(branchListSource);
-    daysToLookBack = moment().subtract('days', 3).format('YYYYMMDDTHHmmssZZ');
+    daysToLookBack = (moment().subtract('days', 3)).format('YYYYMMDDTHHmmssZZ');
     allBuildTypes = {};
     for (_i = 0, _len = serversToMonitor.length; _i < _len; _i++) {
       server = serversToMonitor[_i];

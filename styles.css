@@ -121,6 +121,9 @@ p {
   .not-running .status-text, .not-running
   .stage-text {
     display: none; }
+  .running .status-text, .running
+  .stage-text {
+    display: block; }
 
 .fixtures {
   display: none; }

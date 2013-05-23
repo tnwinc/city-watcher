@@ -107,9 +107,11 @@ p {
 .status-text,
 .stage-text {
   opacity: 0.5;
-
   .not-running & {
     display: none;
+  }
+  .running & {
+    display: block;
   }
 }
 
