@@ -168,8 +168,8 @@
             }
             branch = liForSpecificBuild.find(".branch");
             if (build.running === "running") {
-              li.removeClass('not-running').addClass('running');
               liForBuildType.removeClass('not-running').addClass('running');
+              liForSpecificBuild.removeClass('not-running').addClass('running');
               _results1.push(branch.width("" + (build.percentageComplete - 20) + "%"));
             } else {
               liForSpecificBuild.removeClass('running').addClass('not-running');

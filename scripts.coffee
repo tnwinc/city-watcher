@@ -105,10 +105,10 @@ updateServerList = ->
           branch = liForSpecificBuild.find(".branch") 
 
           if build.running == "running"
-            li
+            liForBuildType
               .removeClass('not-running')
               .addClass('running')
-            liForBuildType
+            liForSpecificBuild
               .removeClass('not-running')
               .addClass('running')
 
