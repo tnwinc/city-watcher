@@ -56,7 +56,7 @@ updateServerList = ->
             if not builds[buildKey]? and build.status != "UNKNOWN"
               builds[buildKey] = { buildType: buildType, build: build }
 
-          buildProjection = for O_o, buildInfo of builds
+          buildProjection = for O_o, buildInfo of builds when buildInfo.build.branchName != '<default>'
             running = buildInfo.build.running
             branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then "master" else buildInfo.build.branchName
             id = "#{buildTypeId}-#{branchName}"
