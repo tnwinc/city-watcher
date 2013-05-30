@@ -13,7 +13,7 @@ if hash
   allBuildTypes = {}
 
   for server in serversToMonitor
-    serverEndPoint = "#{server.protocol}://#{server.address}/app/rest/"
+    serverEndPoint = "#{server.protocol}://#{server.address}/guestAuth/app/rest/"
     for buildType in server.buildTypes
       server.urlForSpecificBuildType = "#{serverEndPoint}buildTypes/id:"
       allBuildTypes[buildType] =
