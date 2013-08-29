@@ -99,7 +99,7 @@ updateServerList = ->
           liForSpecificBuild.addClass "status-#{build.status}"
           liForSpecificBuild.removeClass "status-#{status}" for status in statuses when status != build.status
 
-          branch = liForSpecificBuild.find(".branch") 
+          branch = liForSpecificBuild.find(".branch")
 
           if build.running == "running"
             liForSpecificBuild
