@@ -58,7 +58,7 @@ updateServerList = ->
 
           buildProjection = for O_o, buildInfo of builds when buildInfo.build.branchName != '<default>'
             running = buildInfo.build.running
-            branchName = if not buildInfo.build.branchName? or buildInfo.build.branchName == "refs/heads/master" then "master" else buildInfo.build.branchName
+            branchName = (buildInfo?.build?.branchName || "master").replace('refs/heads/', '')
             id = "#{buildTypeId}-#{branchName}"
             displayName = if branchName == "master" then buildType.name else branchName
 
