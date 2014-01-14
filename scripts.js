@@ -155,7 +155,7 @@
                 builds: buildProjection
               }));
             }
-            liForSpecificBuild = $("#" + build.id);
+            liForSpecificBuild = $("#" + escapedBuildId);
             liForSpecificBuild.find('h2').text(build.name);
             statuses = ['failure', 'success', 'no-recent-builds'];
             liForSpecificBuild.addClass("status-" + build.status);

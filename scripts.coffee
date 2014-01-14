@@ -93,7 +93,7 @@ updateServerList = ->
           if buildDoesNotExist
             $("##{buildTypeId} ul").append branchBuildTemplate {builds: buildProjection}
 
-          liForSpecificBuild = $("##{build.id}")
+          liForSpecificBuild = $("##{escapedBuildId}")
 
           liForSpecificBuild.find('h2').text build.name
 
