@@ -65,8 +65,9 @@ updateServerList = ->
             if running
               do (id)->
                 $.getJSON buildType.urlForSpecificBuild + buildInfo.build.id, (data)->
-                  $("##{id} p.status-text").text data.statusText
-                  $("##{id} p.stage-text").text data["running-info"].currentStageText
+                  escapedBuildId = build.id.replace( /(:|\.|\[|\])/g, "\\$1" )
+                  $("##{escapedBuildId} p.status-text").text data.statusText
+                  $("##{escapedBuildId} p.stage-text").text data["running-info"].currentStageText
             {
               id: id
               buildTypeId: buildTypeId

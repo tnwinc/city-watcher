@@ -114,8 +114,11 @@
                 if (running) {
                   (function(id) {
                     return $.getJSON(buildType.urlForSpecificBuild + buildInfo.build.id, function(data) {
-                      $("#" + id + " p.status-text").text(data.statusText);
-                      return $("#" + id + " p.stage-text").text(data["running-info"].currentStageText);
+                      var escapedBuildId;
+
+                      escapedBuildId = build.id.replace(/(:|\.|\[|\])/g, "\\$1");
+                      $("#" + escapedBuildId + " p.status-text").text(data.statusText);
+                      return $("#" + escapedBuildId + " p.stage-text").text(data["running-info"].currentStageText);
                     });
                   })(id);
                 }
