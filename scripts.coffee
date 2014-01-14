@@ -87,7 +87,8 @@ updateServerList = ->
           }]
 
         for build in buildProjection
-          buildDoesNotExist = $("##{build.id}").length < 1
+          escapedBuildId = build.id.replace( /(:|\.|\[|\])/g, "\\$1" )
+          buildDoesNotExist = $("##{escapedBuildId}").length < 1
           if buildDoesNotExist
             $("##{buildTypeId} ul").append branchBuildTemplate {builds: buildProjection}
 
