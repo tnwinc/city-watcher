@@ -51,9 +51,10 @@ gulp.task 'watchHandlebars', ->
     .pipe(gulp.dest('./_dev/scripts/'))
 
 gulp.task 'watchSass', ->
-  watch(glob: 'src/stylesheets/!(_)*.scss')
-    .pipe(sass())
-    .pipe(gulp.dest('./_dev/stylesheets/'))
+  watch glob: 'src/stylesheets/*.scss', ->
+    gulp.src('src/stylesheets/!(_).scss')
+      .pipe(sass())
+      .pipe(gulp.dest('./_dev/stylesheets/'))
 
 gulp.task 'watch', ['watchCoffee', 'watchHandlebars', 'watchSass']
 

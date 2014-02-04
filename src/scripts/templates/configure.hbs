@@ -1,0 +1,23 @@
+<h2>Configuration</h2>
+
+<form>
+
+  <fieldset>
+    <label for="host">Host</label>
+    {{input value=host}}
+  </fieldset>
+
+  {{#each projects}}
+    <article class="project">
+      <h3>{{name}}</h3>
+      <ul>
+        {{#each builds}}
+          <li {{action 'toggleBuildSelection' this}}>{{name}}</li>
+        {{/each}}
+      </ul>
+    </article class="project">
+  {{/each}}
+
+  <button {{action 'save'}}>Save</button>
+
+</form>

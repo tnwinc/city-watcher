@@ -6,8 +6,11 @@
     "lib/underscore",
     "lib/moment",
     "app",
+    "data/settings",
+    "data/team_city",
     "templates/*",
     "controllers/*",
+    "views/*",
     "routes/*",
     "router"
   ]

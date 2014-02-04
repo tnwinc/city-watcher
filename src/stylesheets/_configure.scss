@@ -1,0 +1,16 @@
+.configure {
+  padding: 10px 20px;
+}
+
+.project {
+  @include clearfix;
+
+  h3 {
+    float: left;
+    width: 130px;
+  }
+
+  ul {
+    margin-left: 150px;
+  }
+}
