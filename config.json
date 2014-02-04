@@ -1,0 +1,14 @@
+{
+  "scripts": [
+    "lib/jquery",
+    "lib/handlebars",
+    "lib/ember",
+    "lib/underscore",
+    "lib/moment",
+    "app",
+    "templates/*",
+    "controllers/*",
+    "routes/*",
+    "router"
+  ]
+}
