@@ -1,7 +1,7 @@
 TeamCity = Ember.Object.extend
 
   init: ->
-    @set 'host', App.settings.getValue 'host'
+    @set 'host', App.settings.getValue 'host', '10.32.2.99'
 
   updateHost: (host)->
     @set 'host', host
@@ -19,17 +19,6 @@ TeamCity = Ember.Object.extend
 
   getBuild: (id)->
     @queryTeamCity "builds/id:#{id}"
-
-  getProjects: ->
-    @queryTeamCity('projects').then (result)=>
-      _.map result.project, (project)=>
-        _.pick project, 'id', 'name'
-
-  getBuildsForProject: (projectId)->
-    @queryTeamCity("projects/id:#{projectId}/buildTypes").then (result)->
-      return [] unless result
-      _.map result.buildType, (buildType)->
-        _.pick buildType, 'id', 'name'
 
   getAllBuilds: ->
     return Ember.RSVP.resolve [] unless @get 'host'

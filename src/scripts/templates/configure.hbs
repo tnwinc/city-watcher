@@ -7,9 +7,13 @@
     {{input value=host}}
   </fieldset>
 
-  {{#each projects}}
+  <h3>Builds</h3>
+
+  {{input value=buildFilter}}
+
+  {{#each filteredProjects}}
     <article class="project">
-      <h3>{{name}}</h3>
+      <h4>{{name}}</h4>
       <ul>
         {{#each builds}}
           <li {{action 'toggleBuildSelection' this}}>{{name}}</li>
