@@ -1,6 +1,7 @@
 App.ConfigureController = Ember.Controller.extend
 
   buildFilter: ''
+  errors: []
 
   unselectedBuilds: (->
     selectedBuilds = @get 'selectedBuilds'
@@ -33,6 +34,14 @@ App.ConfigureController = Ember.Controller.extend
       @set 'builds', builds
   , 500
 
+  validate: ->
+    @set 'errors', []
+    errors = @get 'errors'
+    if _.isEmpty @get('host')
+      errors.addObject 'You must input a host'
+    if _.isEmpty @get('selectedBuilds')
+      errors.addObject 'You must add at least one build'
+
   actions:
 
     addSelectedBuild: (build)->
@@ -42,8 +51,14 @@ App.ConfigureController = Ember.Controller.extend
       @get('selectedBuilds').removeObject build
 
     save: ->
+      @validate()
+      return if @get 'errors.length'
+
+      App.teamCity.updateHost @get('host')
+      App.settings.updateValue 'builds', @get('selectedBuilds')
+
       attemptedTransition = @get 'attemptedTransition'
-      if attemptedTransition and attemptedTransition.targetName isnt 'login'
+      if attemptedTransition and attemptedTransition.targetName isnt 'configure'
         attemptedTransition.retry()
         @set 'attemptedTransition', null
       else

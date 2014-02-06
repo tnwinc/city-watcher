@@ -1,40 +1,53 @@
 <h2>Configuration</h2>
 
-<form>
+<h3>Host</h3>
+{{input value=host}}
 
-  <h3>Host</h3>
-  {{input value=host}}
+<h3>Builds</h3>
 
-  <h3>Builds</h3>
+<ul class="selected-builds">
+  {{#each selectedBuilds}}
+    <li {{action 'removeSelectedBuild' this}}>
+      <i class="fa fa-times"></i>
+      <span class="project-name">
+        {{projectName}}
+      </span>
+      {{name}}
+    </li>
+  {{else}}
+    <li class="no-selected-builds">
+      Select builds below <i class="fa fa-arrow-down"></i>
+    </li>
+  {{/each}}
+</ul>
 
-  <ul>
-    {{#each selectedBuilds}}
-      <li {{action 'removeSelectedBuild' this}}>
-        {{projectName}} - {{name}}
-      </li>
-    {{/each}}
-  </ul>
+<fieldset class="build-filter">
+  <i class="fa fa-search"></i>
+  {{input value=buildFilter}}
+</fieldset>
 
-  <fieldset class="build-filter">
-    <i class="fa fa-search"></i>
-    {{input value=buildFilter}}
-  </fieldset>
-
+<div class="projects">
   {{#each projectsAndBuilds}}
-    <article class="project">
+    <article>
       <h4>{{name}}</h4>
-      <ul>
+      <ul class="builds">
         {{#each builds}}
           <li {{action 'addSelectedBuild' this}}>
+            <i class="fa fa-plus"></i>
             {{name}}
           </li>
         {{/each}}
       </ul>
     </article class="project">
   {{else}}
-    <p>No builds found for given host</p>
+    <p>No builds found</p>
   {{/each}}
+</div>
 
-  <button {{action 'save'}}>Save</button>
+<button {{action 'save'}}>Save</button>
 
-</form>
+<ul class="errors">
+  {{#each errors}}
+    <li>{{this}}</li>
+  {{/each}}
+</ul>
