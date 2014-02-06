@@ -1,6 +1,8 @@
 App.ConfigureRoute = Ember.Route.extend
 
   setupController: (controller)->
-    controller.set 'host', App.settings.getValue 'host'
-    App.teamCity.getAllBuilds().then (projects)->
-      controller.set 'projects', projects
+    host = App.settings.getValue 'host'
+    controller.set 'host', host
+    controller.set 'selectedBuilds', App.settings.getValue 'builds', []
+    App.teamCity.getAllBuilds(host).then (builds)->
+      controller.set 'builds', builds

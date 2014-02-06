@@ -7,33 +7,33 @@ TeamCity = Ember.Object.extend
     @set 'host', host
     App.settings.updateString 'host', host
 
+  urlWithHost: (host)->
+    "http://#{host}/guestAuth/app/rest/"
+
   baseUrl: (->
-    "http://#{@get 'host'}/guestAuth/app/rest/"
+    urlWithHost @get('host')
   ).property 'host'
 
-  queryTeamCity: (url)->
+  queryTeamCity: (url, baseUrl = @get('baseUrl'))->
     new Ember.RSVP.Promise (resolve, reject)=>
-      $.getJSON "#{@get 'baseUrl'}#{url}"
+      $.getJSON "#{baseUrl}#{url}"
         .then (value)-> resolve value
         .fail (error)-> reject error
 
   getBuild: (id)->
     @queryTeamCity "builds/id:#{id}"
 
-  getAllBuilds: ->
-    return Ember.RSVP.resolve [] unless @get 'host'
+  getAllBuilds: (host)->
+    new Ember.RSVP.Promise (resolve)=>
+      return resolve [] unless host
 
-    @queryTeamCity('buildTypes').then (result)->
-      builds = _.map result.buildType, (buildType)->
-        _.pick buildType, 'id', 'name', 'projectId', 'projectName'
+      getBuilds = @queryTeamCity('buildTypes', @urlWithHost host)
 
-      projects = _.groupBy builds, (build)->
-        build.projectId
+      getBuilds.then (result)->
+        builds = _.map result.buildType, (buildType)->
+          _.pick buildType, 'id', 'name', 'projectId', 'projectName'
+        resolve builds
 
-      _.map projects, (builds, id)->
-        id: id
-        name: builds[0].projectName
-        builds: _.map builds, (build)->
-          _.pick build, 'id', 'name'
+      getBuilds.catch -> resolve []
 
 App.teamCity = TeamCity.create()

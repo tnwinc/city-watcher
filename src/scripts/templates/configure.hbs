@@ -2,24 +2,37 @@
 
 <form>
 
-  <fieldset>
-    <label for="host">Host</label>
-    {{input value=host}}
-  </fieldset>
+  <h3>Host</h3>
+  {{input value=host}}
 
   <h3>Builds</h3>
 
-  {{input value=buildFilter}}
+  <ul>
+    {{#each selectedBuilds}}
+      <li {{action 'removeSelectedBuild' this}}>
+        {{projectName}} - {{name}}
+      </li>
+    {{/each}}
+  </ul>
 
-  {{#each filteredProjects}}
+  <fieldset class="build-filter">
+    <i class="fa fa-search"></i>
+    {{input value=buildFilter}}
+  </fieldset>
+
+  {{#each projectsAndBuilds}}
     <article class="project">
       <h4>{{name}}</h4>
       <ul>
         {{#each builds}}
-          <li {{action 'toggleBuildSelection' this}}>{{name}}</li>
+          <li {{action 'addSelectedBuild' this}}>
+            {{name}}
+          </li>
         {{/each}}
       </ul>
     </article class="project">
+  {{else}}
+    <p>No builds found for given host</p>
   {{/each}}
 
   <button {{action 'save'}}>Save</button>

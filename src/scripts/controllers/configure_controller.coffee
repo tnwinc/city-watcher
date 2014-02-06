@@ -2,34 +2,44 @@ App.ConfigureController = Ember.Controller.extend
 
   buildFilter: ''
 
-  filteredProjects: (->
-    filter = @get('buildFilter').toLowerCase()
-    filteredProjects = []
-    _.each @get('projects'), (project)->
-      filteredBuilds = _.filter project.builds, (build)->
-        name = build.name.toLowerCase()
-        name.indexOf(filter) >= 0
-      if filteredBuilds.length
-        project = _.pick project, 'id', 'name'
-        project.builds = filteredBuilds
-        filteredProjects.push project
-    filteredProjects
-  ).property 'projects.@each', 'buildFilter'
+  unselectedBuilds: (->
+    selectedBuilds = @get 'selectedBuilds'
+    _.reject @get('builds'), (build)->
+      _.findWhere selectedBuilds, id: build.id
+  ).property 'builds.@each', 'selectedBuilds.@each'
 
-  refreshBuilds: (->
-    @updateHostAndProjects()
+  filteredBuilds: (->
+    filter = @get('buildFilter').toLowerCase()
+    _.filter @get('unselectedBuilds'), (build)->
+      build.name.toLowerCase().indexOf(filter) >= 0
+  ).property 'unselectedBuilds.@each', 'buildFilter'
+
+  projectsAndBuilds: (->
+    projects = _.groupBy @get('filteredBuilds'), (build)->
+      build.projectId
+
+    _.map projects, (builds, id)->
+      id: id
+      name: builds[0].projectName
+      builds: builds
+  ).property 'filteredBuilds.@each'
+
+  hostUpdated: (->
+    @updateBuilds()
   ).observes 'host'
 
-  updateHostAndProjects: _.debounce ->
-    App.teamCity.updateHost @get('host')
-    App.teamCity.getAllBuilds().then (projects)=>
-      @set 'projects', projects
-  , 300
+  updateBuilds: _.debounce ->
+    App.teamCity.getAllBuilds(@get('host')).then (builds)=>
+      @set 'builds', builds
+  , 500
 
   actions:
 
-    toggleBuildSelection: (build)->
-      # set build as selected
+    addSelectedBuild: (build)->
+      @get('selectedBuilds').addObject build
+
+    removeSelectedBuild: (build)->
+      @get('selectedBuilds').removeObject build
 
     save: ->
       attemptedTransition = @get 'attemptedTransition'
