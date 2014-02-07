@@ -11,7 +11,7 @@ TeamCity = Ember.Object.extend
     "http://#{host}/guestAuth/app/rest/"
 
   baseUrl: (->
-    urlWithHost @get('host')
+    @urlWithHost @get('host')
   ).property 'host'
 
   queryTeamCity: (url, baseUrl = @get('baseUrl'))->
@@ -35,5 +35,31 @@ TeamCity = Ember.Object.extend
         resolve builds
 
       getBuilds.catch -> resolve []
+
+  getRunningBuilds: (builds)->
+    sinceDate = (moment().subtract 'days', 3).format 'YYYYMMDDTHHmmssZZ'
+    runningBuilds = _.map builds, (build)=>
+      query = "\
+        builds?\
+          locator=running:all,\
+          branch:branched:any,\
+          buildType:#{build.id},\
+          sinceDate:#{sinceDate}\
+      "
+      @queryTeamCity(query).then (data)->
+        uniqueBuilds = _.uniq data.build, (build)-> build.branchName
+
+        name: build.name
+        builds: _.filter uniqueBuilds, (build)->
+          build.status isnt 'UNKNOWN' and build.branchName isnt '<default>'
+
+    Ember.RSVP.all(runningBuilds).then (buildTypes)->
+      _.flatten _.map buildTypes, (buildType)->
+        _.map buildType.builds, (build)->
+          id: build.id
+          running: !!build.running
+          percentageComplete: build.percentageComplete
+          branchName: build.branchName || buildType.name
+          status: build.status.toLowerCase()
 
 App.teamCity = TeamCity.create()
