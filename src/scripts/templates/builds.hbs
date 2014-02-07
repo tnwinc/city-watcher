@@ -1,9 +1,11 @@
 {{#each}}
   <article {{bind-attr class="status running"}}>
     <figure></figure>
-    <p>{{branchName}}</p>
-    {{#if running}}
-      <progress {{bind-attr value=percentageComplete}} max="100"></progress>
-    {{/if}}
+    <section>
+      <p>{{branchName}}</p>
+      {{#if running}}
+        <progress {{bind-attr value=percentageComplete}} max="100"></progress>
+      {{/if}}
+    </section>
   </article>
 {{/each}}

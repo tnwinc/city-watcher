@@ -56,10 +56,11 @@ TeamCity = Ember.Object.extend
     Ember.RSVP.all(runningBuilds).then (buildTypes)->
       _.flatten _.map buildTypes, (buildType)->
         _.map buildType.builds, (build)->
-          id: build.id
-          running: !!build.running
-          percentageComplete: build.percentageComplete
-          branchName: build.branchName || buildType.name
-          status: build.status.toLowerCase()
+          Ember.Object.create
+            id: build.id
+            running: !!build.running
+            percentageComplete: build.percentageComplete
+            branchName: build.branchName || buildType.name
+            status: build.status.toLowerCase()
 
 App.teamCity = TeamCity.create()
