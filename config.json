@@ -1,7 +1,7 @@
 {
   "scripts": [
     "lib/jquery",
-    "lib/handlebars",
+    "lib/handlebars-runtime",
     "lib/ember",
     "lib/underscore",
     "lib/moment",
