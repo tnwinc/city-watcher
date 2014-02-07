@@ -13,12 +13,12 @@
     }
 
     &.success figure {
-      background: green;
+      background: $success-color;
     }
 
     &.failure figure,
     &.error figure {
-      background: red;
+      background: $error-color;
     }
   }
 }
