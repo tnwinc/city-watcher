@@ -21,7 +21,6 @@ App.BuildsRoute = App.Route.extend
           if currentBuild
             props = ['running', 'percentageComplete', 'status']
             diff = @_buildsDiff currentBuild, newBuild, props
-            console.log diff
             currentBuild.setProperties diff
           else
             model.addObject newBuild
