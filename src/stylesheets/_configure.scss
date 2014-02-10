@@ -35,6 +35,11 @@
   }
 }
 
+h3 {
+  color: #d3d3d3;
+  margin-top: 20px;
+}
+
 .build-filter {
   position: relative;
 
@@ -86,6 +91,8 @@
 }
 
 .projects {
+  font-size: .9em;
+
   article {
     @include clearfix;
   }
