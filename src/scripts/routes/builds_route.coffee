@@ -14,11 +14,23 @@ App.BuildsRoute = App.Route.extend
     @set 'updateInterval', setInterval =>
       builds = App.settings.getValue 'builds'
       App.teamCity.getRunningBuilds(builds).then (newBuilds)=>
-        _.each model, (currentBuild, i)=>
-          props = ['running', 'percentageComplete', 'status']
-          diff = @_buildsDiff currentBuild, newBuilds[i], props
-          currentBuild.setProperties diff
+        @_purgeOldBuilds model, newBuilds
+        for newBuild in newBuilds
+          currentBuild = _.find model, (currentBuild)->
+            newBuild.get('id') is currentBuild.get('id')
+          if currentBuild
+            props = ['running', 'percentageComplete', 'status']
+            diff = @_buildsDiff currentBuild, currentBuild, props
+            currentBuild.setProperties diff
+          else
+            model.addObject newBuild
     , 5000
+
+  _purgeOldBuilds: (currentBuilds, newBuilds)->
+    newIds = _.map newBuilds, (newBuild)-> newBuild.get 'id'
+    for currentBuild in currentBuilds
+      unless _.contains newIds, currentBuild.get('id')
+        currentBuilds.removeObject currentBuild
 
   _buildsDiff: (currentBuild, newBuild, props)->
     diff = {}
