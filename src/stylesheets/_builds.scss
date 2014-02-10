@@ -6,12 +6,25 @@
     $figure-size: 32px;
 
     figure {
-      background: #e3e3e3;
+      background-color: #e3e3e3;
+      background-image: linear-gradient(145deg, rgba(255,255,255,0.2), transparent);
+      border: solid 3px;
       border-radius: 50%;
       float: left;
       margin-top: 5px;
-      width: $figure-size;
-      height: $figure-size;
+      width: $figure-size - 6;
+      height: $figure-size - 6;
+    }
+
+    &.success figure {
+      background-color: $success-color;
+      border-color: darken($success-color, 20%);
+    }
+
+    &.failure figure,
+    &.error figure {
+      background-color: $error-color;
+      border-color: darken($error-color, 20%);
     }
 
     section {
@@ -53,14 +66,25 @@
       background-size: 35px 10px, 100% 100%, 100% 100%;
       transition: all 1s ease-out;
     }
+  }
+}
 
-    &.success figure {
-      background: $success-color;
-    }
+a.link-to-configure {
+  color: rgba(255,255,255,0.8);
+  display: block;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
 
-    &.failure figure,
-    &.error figure {
-      background: $error-color;
-    }
+  i {
+    display: none;
+    float: right;
+  }
+
+  &:hover i {
+    display: inline;
   }
 }
