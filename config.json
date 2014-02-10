@@ -12,6 +12,7 @@
     "controllers/*",
     "components/*",
     "views/*",
+    "routes/base_route",
     "routes/*",
     "router"
   ]

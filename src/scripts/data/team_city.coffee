@@ -1,7 +1,7 @@
 TeamCity = Ember.Object.extend
 
   init: ->
-    @set 'host', App.settings.getValue 'host', '10.32.2.99'
+    @set 'host', App.settings.getValue 'host', 'carbon-scrum'
 
   updateHost: (host)->
     @set 'host', host
