@@ -20,24 +20,40 @@
   padding: 10px 20px;
   position: relative;
 
-  button {
+  .save {
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
   }
 
   .errors {
+    @include clearfix;
+    background: #e3e3e3;
+    border-radius: 3px;
     color: $error-color;
+    padding: 10px;
     position: absolute;
-    top: 60px;
-    right: 20px;
-    text-align: right;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    text-align: left;
+
+    ul {
+      margin: 0 0 10px;
+    }
+
+    .clear-errors {
+      float: right;
+    }
   }
 }
 
 h3 {
   color: #d3d3d3;
-  margin-top: 20px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .build-filter {
@@ -66,7 +82,7 @@ h3 {
 
     &.no-selected-builds {
       background: none;
-      color: #767676;
+      color: #929292;
       cursor: default;
 
       i {

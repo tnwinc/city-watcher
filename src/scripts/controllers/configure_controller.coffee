@@ -12,7 +12,9 @@ App.ConfigureController = Ember.Controller.extend
   filteredBuilds: (->
     filter = @get('buildFilter').toLowerCase()
     _.filter @get('unselectedBuilds'), (build)->
-      build.name.toLowerCase().indexOf(filter) >= 0
+      buildName = build.name.toLowerCase()
+      projectName = build.projectName.toLowerCase()
+      buildName.indexOf(filter) >= 0 or projectName.indexOf(filter) >= 0
   ).property 'unselectedBuilds.@each', 'buildFilter'
 
   projectsAndBuilds: (->
@@ -42,6 +44,8 @@ App.ConfigureController = Ember.Controller.extend
     if _.isEmpty @get('selectedBuilds')
       errors.addObject 'You must add at least one build'
 
+  hasErrors: Ember.computed.notEmpty 'errors'
+
   actions:
 
     addSelectedBuild: (build)->
@@ -49,6 +53,9 @@ App.ConfigureController = Ember.Controller.extend
 
     removeSelectedBuild: (build)->
       @get('selectedBuilds').removeObject build
+
+    clearErrors: ->
+      @set 'errors', []
 
     save: ->
       @validate()
