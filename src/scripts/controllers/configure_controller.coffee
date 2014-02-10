@@ -27,16 +27,16 @@ App.ConfigureController = Ember.Controller.extend
       builds: builds
   ).property 'filteredBuilds.@each'
 
-  hostUpdated: (->
-    @updateBuilds()
+  _hostUpdated: (->
+    @_updateBuilds()
   ).observes 'host'
 
-  updateBuilds: _.debounce ->
+  _updateBuilds: _.debounce ->
     App.teamCity.getAllBuilds(@get('host')).then (builds)=>
       @set 'builds', builds
   , 500
 
-  validate: ->
+  _validate: ->
     @set 'errors', []
     errors = @get 'errors'
     if _.isEmpty @get('host')
@@ -58,7 +58,7 @@ App.ConfigureController = Ember.Controller.extend
       @set 'errors', []
 
     save: ->
-      @validate()
+      @_validate()
       return if @get 'errors.length'
 
       App.teamCity.updateHost @get('host')
