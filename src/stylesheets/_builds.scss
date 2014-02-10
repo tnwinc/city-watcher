@@ -39,31 +39,29 @@
       white-space: nowrap;
     }
 
-    progress {
-      display: block;
-      height: 10px;
-    }
+    $progress-bar-height: 12px;
 
-    progress[value] {
-      -webkit-appearance: none;
-      margin: 0;
-      width: 100%;
-    }
-
-    progress[value]::-webkit-progress-bar {
+    .progress-bar {
       background-color: #222;
       border-radius: 3px;
+      display: block;
+      position: relative;
+      height: $progress-bar-height;
     }
 
-    progress[value]::-webkit-progress-value {
+    .progress-value {
       background-color: #878787;
-      background-image: -webkit-linear-gradient(-45deg,
-                                                transparent 33%,
-                                                rgba(0, 0, 0, 0.1) 33%,
-                                                rgba(0, 0, 0, 0.1) 66%,
-                                                transparent 66%);
+      background-image: linear-gradient(-45deg,
+                                        transparent 33%,
+                                        rgba(0, 0, 0, 0.1) 33%,
+                                        rgba(0, 0, 0, 0.1) 66%,
+                                        transparent 66%);
       border-radius: 3px;
-      background-size: 35px 10px, 100% 100%, 100% 100%;
+      background-size: 35px $progress-bar-height, 100% 100%, 100% 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
       transition: all 1s ease-out;
     }
   }

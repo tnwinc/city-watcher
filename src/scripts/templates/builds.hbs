@@ -4,7 +4,7 @@
     <section>
       <p>{{branchName}}</p>
       {{#if running}}
-        <progress {{bind-attr value=percentageComplete}} max="100"></progress>
+        {{progress-bar value=percentageComplete}}
       {{/if}}
     </section>
   </article>
