@@ -74,7 +74,7 @@ h3 {
 }
 
 .selected-builds {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   li {
     @include build($primary-color);
@@ -116,11 +116,11 @@ h3 {
   h4 {
     float: left;
     text-align: right;
-    width: 130px;
+    width: 24%;
   }
 
   ul {
-    margin-left: 150px;
+    margin-left: 28%;
   }
 }
 
