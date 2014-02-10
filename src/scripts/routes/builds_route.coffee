@@ -5,17 +5,22 @@ App.BuildsRoute = App.Route.extend
 
   setupController: (controller, model)->
     @_super controller, model
+    @_listenForBuildUpdates model
 
-    setInterval =>
+  deactivate: ->
+    clearInterval @get('updateInterval')
+
+  _listenForBuildUpdates: (model)->
+    @set 'updateInterval', setInterval =>
       builds = App.settings.getValue 'builds'
       App.teamCity.getRunningBuilds(builds).then (newBuilds)=>
         _.each model, (currentBuild, i)=>
           props = ['running', 'percentageComplete', 'status']
-          diff = @buildsDiff currentBuild, newBuilds[i], props
+          diff = @_buildsDiff currentBuild, newBuilds[i], props
           currentBuild.setProperties diff
     , 5000
 
-  buildsDiff: (currentBuild, newBuild, props)->
+  _buildsDiff: (currentBuild, newBuild, props)->
     diff = {}
     for prop in props
       if currentBuild.get(prop) isnt newBuild.get(prop)
