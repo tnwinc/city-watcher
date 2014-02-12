@@ -31,12 +31,12 @@ TeamCity = Ember.Object.extend
 
       getBuilds.then (result)->
         builds = _.map result.buildType, (buildType)->
-          _.pick buildType, 'id', 'name', 'projectId', 'projectName'
+          Ember.Object.create _.pick buildType, 'id', 'name', 'projectId', 'projectName'
         resolve builds
 
       getBuilds.catch -> resolve []
 
-  getRunningBuilds: (builds)->
+  getActiveBuilds: (builds)->
     sinceDate = (moment().subtract 'days', 3).format 'YYYYMMDDTHHmmssZZ'
     runningBuilds = _.map builds, (build)=>
       query = "\
@@ -55,12 +55,16 @@ TeamCity = Ember.Object.extend
 
     Ember.RSVP.all(runningBuilds).then (buildTypes)->
       _.flatten _.map buildTypes, (buildType)->
-        _.map buildType.builds, (build)->
+        _.map buildType.builds, (activeBuild)->
+          parentBuild = _.find builds, (build)->
+            build.id is activeBuild.buildTypeId
+
           Ember.Object.create
-            id: build.id
-            running: !!build.running
-            percentageComplete: build.percentageComplete
-            branchName: build.branchName || buildType.name
-            status: build.status.toLowerCase()
+            id: activeBuild.id
+            running: !!activeBuild.running
+            percentageComplete: activeBuild.percentageComplete
+            branchName: activeBuild.branchName || buildType.name
+            status: activeBuild.status.toLowerCase()
+            order: parentBuild.order
 
 App.teamCity = TeamCity.create()

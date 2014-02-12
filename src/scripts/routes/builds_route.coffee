@@ -1,7 +1,7 @@
 App.BuildsRoute = App.Route.extend
 
   model: ->
-    App.teamCity.getRunningBuilds App.settings.getValue('builds')
+    App.teamCity.getActiveBuilds App.settings.getValue('builds')
 
   setupController: (controller, model)->
     @_super controller, model
@@ -13,7 +13,7 @@ App.BuildsRoute = App.Route.extend
   _listenForBuildUpdates: (model)->
     @set 'updateInterval', setInterval =>
       builds = App.settings.getValue 'builds'
-      App.teamCity.getRunningBuilds(builds).then (newBuilds)=>
+      App.teamCity.getActiveBuilds(builds).then (newBuilds)=>
         @_purgeOldBuilds model, newBuilds
         for newBuild in newBuilds
           currentBuild = _.find model, (currentBuild)->

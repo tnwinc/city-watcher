@@ -3,21 +3,25 @@
 
 <h3>Builds</h3>
 
-<ul class="selected-builds">
-  {{#each selectedBuilds}}
-    <li {{action 'removeSelectedBuild' this}}>
-      <i class="fa fa-times"></i>
-      <span class="project-name">
-        {{projectName}}
-      </span>
-      {{name}}
-    </li>
-  {{else}}
-    <li class="no-selected-builds">
-      Select builds below <i class="fa fa-arrow-down"></i>
-    </li>
-  {{/each}}
-</ul>
+{{#if hasSelectedBuilds}}
+  <ul class="selected-builds">
+    {{#sortable-list tagName="ul" class="selected-builds" itemTag="li" items=selectedBuilds onUpdate="didSortSelectedBuilds"}}
+      <li {{bind-attr data-id=id}}>
+        <span>
+          {{projectName}}
+        </span>
+        {{name}}
+        <a href="#" {{action 'removeSelectedBuild' this}}>
+          <i class="fa fa-times"></i>
+        </a>
+      </li>
+    {{/sortable-list}}
+  </ul>
+{{else}}
+  <p class="no-selected-builds">
+    Select builds below <i class="fa fa-arrow-down"></i>
+  </p>
+{{/if}}
 
 <fieldset class="build-filter">
   <i class="fa fa-search"></i>

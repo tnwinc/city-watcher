@@ -4,28 +4,35 @@ App.ConfigureController = Ember.Controller.extend
   errors: []
 
   unselectedBuilds: (->
-    selectedBuilds = @get 'selectedBuilds'
+    selectedBuilds = @get 'selectedBuilds.content'
     _.reject @get('builds'), (build)->
-      _.findWhere selectedBuilds, id: build.id
-  ).property 'builds.@each', 'selectedBuilds.@each'
+      _.find selectedBuilds, (selectedBuild)->
+        selectedBuild.get('id') is build.get('id')
+  ).property 'builds.@each', 'selectedBuilds.content.@each'
 
   filteredBuilds: (->
     filter = @get('buildFilter').toLowerCase()
     _.filter @get('unselectedBuilds'), (build)->
-      buildName = build.name.toLowerCase()
-      projectName = build.projectName.toLowerCase()
+      buildName = build.get('name').toLowerCase()
+      projectName = build.get('projectName').toLowerCase()
       buildName.indexOf(filter) >= 0 or projectName.indexOf(filter) >= 0
   ).property 'unselectedBuilds.@each', 'buildFilter'
 
   projectsAndBuilds: (->
     projects = _.groupBy @get('filteredBuilds'), (build)->
-      build.projectId
+      build.get('projectId')
 
     _.map projects, (builds, id)->
       id: id
-      name: builds[0].projectName
+      name: builds[0].get('projectName')
       builds: builds
   ).property 'filteredBuilds.@each'
+
+  hasErrors: Ember.computed.notEmpty 'errors'
+
+  hasSelectedBuilds: (->
+    !!@get 'selectedBuilds.length'
+  ).property 'selectedBuilds.@each'
 
   _hostUpdated: (->
     @_updateBuilds()
@@ -41,18 +48,23 @@ App.ConfigureController = Ember.Controller.extend
     errors = @get 'errors'
     if _.isEmpty @get('host')
       errors.addObject 'You must input a host'
-    if _.isEmpty @get('selectedBuilds')
+    if _.isEmpty @get('selectedBuilds.content')
       errors.addObject 'You must add at least one build'
-
-  hasErrors: Ember.computed.notEmpty 'errors'
 
   actions:
 
     addSelectedBuild: (build)->
+      build.set 'order', @get 'selectedBuilds.length'
       @get('selectedBuilds').addObject build
 
     removeSelectedBuild: (build)->
       @get('selectedBuilds').removeObject build
+
+    didSortSelectedBuilds: (order)->
+      @beginPropertyChanges()
+      _.each @get('selectedBuilds.content'), (selectedBuild)->
+        selectedBuild.set 'order', order[selectedBuild.get('id')]
+      @endPropertyChanges()
 
     clearErrors: ->
       @set 'errors', []
@@ -62,7 +74,7 @@ App.ConfigureController = Ember.Controller.extend
       return if @get 'errors.length'
 
       App.teamCity.updateHost @get('host')
-      App.settings.updateValue 'builds', @get('selectedBuilds')
+      App.settings.updateValue 'builds', @get('selectedBuilds.content')
 
       attemptedTransition = @get 'attemptedTransition'
       if attemptedTransition and attemptedTransition.targetName isnt 'configure'

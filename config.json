@@ -1,6 +1,7 @@
 {
   "scripts": [
     "lib/jquery",
+    "lib/jquery-ui-sortable",
     "lib/handlebars-runtime",
     "lib/ember",
     "lib/underscore",

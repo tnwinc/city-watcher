@@ -1,13 +1,8 @@
 @mixin build ($background-color) {
   background: $background-color;
   border-radius: 3px;
-  cursor: pointer;
   margin: 2px 0;
   padding: 3px 5px;
-
-  &:hover {
-    background: lighten($background-color, 10%);
-  }
 
   i {
     float: right;
@@ -79,20 +74,18 @@ h3 {
   li {
     @include build($primary-color);
     color: #FFF;
+    cursor: move;
+    padding-right: 24px;
+    position: relative;
 
-    &.no-selected-builds {
-      background: none;
-      color: #929292;
-      cursor: default;
-
-      i {
-        color: #929292;
-        float: none;
-        margin: 0 0 0 5px;
-      }
+    &.ui-sortable-placeholder {
+      background: $primary-color;
+      border-radius: 3px;
+      opacity: 0.5;
+      visibility: visible !important;
     }
 
-    .project-name {
+    span {
       background: rgba(255,255,255,0.2);
       border-radius: 3px 0 0 3px;
       display: block;
@@ -103,6 +96,30 @@ h3 {
       top: -3px;
       left: -5px;
     }
+
+    a {
+      color: #FFF;
+      opacity: 0.6;
+      position: absolute;
+      top: 0;
+      right: 0;
+      text-align: center;
+      width: 24px;
+      height: 24px;
+
+      &:hover {
+        opacity: 1.0;
+      }
+    }
+  }
+}
+
+.no-selected-builds {
+  color: #929292;
+
+  i {
+    color: #929292;
+    margin-right: 5px;
   }
 }
 
@@ -127,5 +144,10 @@ h3 {
 .builds {
   li {
     @include build(#575757);
+    cursor: pointer;
+
+    &:hover {
+      background: lighten(#575757, 10%);
+    }
   }
 }
