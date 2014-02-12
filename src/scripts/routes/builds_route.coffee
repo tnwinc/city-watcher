@@ -31,6 +31,7 @@ App.BuildsRoute = App.Route.extend
     for currentBuild in currentBuilds
       unless _.contains newIds, currentBuild.get('id')
         currentBuilds.removeObject currentBuild
+    return
 
   _buildsDiff: (currentBuild, newBuild, props)->
     diff = {}
