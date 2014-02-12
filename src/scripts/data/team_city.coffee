@@ -63,7 +63,7 @@ TeamCity = Ember.Object.extend
             id: activeBuild.id
             running: !!activeBuild.running
             percentageComplete: activeBuild.percentageComplete
-            branchName: activeBuild.branchName || buildType.name
+            branchName: (activeBuild.branchName || buildType.name).replace 'refs/heads/', ''
             status: activeBuild.status.toLowerCase()
             order: parentBuild.order
 
