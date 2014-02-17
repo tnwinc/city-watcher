@@ -37,7 +37,7 @@ TeamCity = Ember.Object.extend
       getBuilds.catch -> resolve []
 
   getActiveBuilds: (builds)->
-    sinceDate = (moment().subtract 'days', 3).format 'YYYYMMDDTHHmmssZZ'
+    sinceDate = (moment().subtract 'days', 1).format 'YYYYMMDDTHHmmssZZ'
     runningBuilds = _.map builds, (build)=>
       query = "\
         builds?\
