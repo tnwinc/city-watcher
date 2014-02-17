@@ -1,7 +1,8 @@
 App.BuildsRoute = App.Route.extend
 
   model: ->
-    App.teamCity.getActiveBuilds App.settings.getValue('builds')
+    selectedBuilds = App.settings.getValue 'builds'
+    App.teamCity.getActiveBuilds(selectedBuilds).catch -> []
 
   setupController: (controller, model)->
     @_super controller, model

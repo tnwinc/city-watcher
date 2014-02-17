@@ -8,6 +8,11 @@
       {{/if}}
     </section>
   </article>
+{{else}}
+  <section class="no-builds">
+    <p>No builds to show</p>
+    <p>TeamCity may be down</p>
+  </section>
 {{/each}}
 
 {{#link-to 'configure' class="link-to-configure"}}
