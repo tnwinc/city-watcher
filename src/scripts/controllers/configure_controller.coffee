@@ -66,8 +66,9 @@ App.ConfigureController = Ember.Controller.extend
         selectedBuild.set 'order', order[selectedBuild.get('id')]
       @endPropertyChanges()
 
-    clearErrors: ->
-      @set 'errors', []
+    toggleHideSelectedBuilds: ->
+      @toggleProperty 'hideSelectedBuilds'
+      return
 
     save: ->
       @_validate()

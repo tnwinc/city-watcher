@@ -1,10 +1,15 @@
 <h3>Host</h3>
 {{input value=host}}
 
-<h3>Builds</h3>
+<h3>
+  Builds
+  <a href="#" class="toggle-hide-selected" {{action 'toggleHideSelectedBuilds'}}>
+    <i {{bind-attr class="hideSelectedBuilds:fa-caret-down:fa-caret-up :fa"}}></i>
+  </a>
+</h3>
 
 {{#if hasSelectedBuilds}}
-  <ul class="selected-builds">
+  <ul {{bind-attr class="hideSelectedBuilds:hide :selected-builds"}}>
     {{#sortable-list tagName="ul" class="selected-builds" itemTag="li" items=selectedBuilds onUpdate="didSortSelectedBuilds"}}
       <li {{bind-attr data-id=id}}>
         <span>

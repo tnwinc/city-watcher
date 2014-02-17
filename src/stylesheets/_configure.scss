@@ -46,6 +46,16 @@
 h3 {
   color: #d3d3d3;
 
+  a.toggle-hide-selected {
+    color: #a3a3a3;
+    margin-left: 5px;
+
+    &:hover,
+    &:focus {
+      color: #c7c7c7;
+    }
+  }
+
   &:first-of-type {
     margin-top: 0;
   }
@@ -70,6 +80,10 @@ h3 {
 
 .selected-builds {
   margin-bottom: 10px;
+
+  &.hide {
+    display: none;
+  }
 
   li {
     @include build($primary-color);
