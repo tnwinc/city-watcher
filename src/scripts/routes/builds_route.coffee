@@ -27,11 +27,12 @@ App.BuildsRoute = App.Route.extend
             model.addObject newBuild
     , 5000
 
-  _purgeOldBuilds: (currentBuilds, newBuilds)->
+  _purgeOldBuilds: (model, newBuilds)->
+    currentBuilds = model.copy()
     newIds = _.map newBuilds, (newBuild)-> newBuild.get 'id'
     for currentBuild in currentBuilds
       unless _.contains newIds, currentBuild.get('id')
-        currentBuilds.removeObject currentBuild
+        model.removeObject currentBuild
     return
 
   _buildsDiff: (currentBuild, newBuild, props)->
