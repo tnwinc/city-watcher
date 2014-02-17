@@ -70,6 +70,9 @@ App.ConfigureController = Ember.Controller.extend
       @toggleProperty 'hideSelectedBuilds'
       return
 
+    clearErrors: ->
+      @set 'errors', []
+
     save: ->
       @_validate()
       return if @get 'errors.length'
