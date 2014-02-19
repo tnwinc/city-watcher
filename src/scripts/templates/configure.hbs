@@ -3,19 +3,17 @@
 
 <h3>
   Builds
-  <a href="#" class="toggle-hide-selected" {{action 'toggleHideSelectedBuilds'}}>
-    <i {{bind-attr class="hideSelectedBuilds:fa-caret-down:fa-caret-up :fa"}}></i>
+  <a href="#" class="toggle-collapse-selected" {{action 'toggleCollapseSelectedBuilds'}}>
+    <i {{bind-attr class="collapseSelectedBuilds:fa-caret-down:fa-caret-up :fa"}}></i>
   </a>
 </h3>
 
 {{#if hasSelectedBuilds}}
-  <ul {{bind-attr class="hideSelectedBuilds:hide :selected-builds"}}>
+  <ul {{bind-attr class="collapseSelectedBuilds:collapsed :selected-builds"}}>
     {{#sortable-list tagName="ul" class="selected-builds" itemTag="li" items=selectedBuilds onUpdate="didSortSelectedBuilds"}}
       <li {{bind-attr data-id=id}}>
-        <span>
-          {{projectName}}
-        </span>
-        {{name}}
+        <span class="project-name">{{projectName}}</span>
+        <span>{{name}}</span>
         <a href="#" {{action 'removeSelectedBuild' this}}>
           <i class="fa fa-times"></i>
         </a>
