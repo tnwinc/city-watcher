@@ -1,3 +1,6 @@
 window.App = Ember.Application.create()
 
-App.NAMESPACE = 'city-watcher'
+idMatch = location.search.match /\?.*id\=(\d+)/
+id = if idMatch then "-#{idMatch[1]}" else ''
+
+App.NAMESPACE = "city-watcher#{id}"
