@@ -2,14 +2,6 @@
 
 Monitor the status of TeamCity builds.
 
-### Notes
-
-Since this relies on cross-origin requests, Chrome must be run with the following flags for it to work:
-
-```
---allow-running-insecure-content --disable-web-security
-```
-
 ### Upcoming Features
 
 * Hiding of successful builds optional
@@ -18,3 +10,54 @@ Since this relies on cross-origin requests, Chrome must be run with the followin
 * Hiding of build names optional
 * Number of days to look back configurable
 * Add tests
+
+### Prerequisites
+
+Install:
+
+* node
+* npm
+
+Run:
+
+```
+npm install
+```
+
+### Running locally
+
+Run:
+
+```
+npm run prod
+```
+
+then go to [http://localhost:8081](http://localhost:8081)
+
+### Developing
+
+Run:
+
+```
+npm run dev
+```
+
+which will:
+
+* compile CoffeeScript, SCSS, and Handlebars(.hbs) files on save
+* run a server at [http://localhost:8080](http://localhost:8080)
+
+### Deploying
+
+Run:
+
+```
+npm run deploy
+```
+
+which will:
+
+* compile and optimize scripts and stylesheets
+* put only the relevant files into the `_build` directory
+* checkout the `_build` directory into the `gh-pages` branch
+* **force push** the `gh-pages` branch to the remote
