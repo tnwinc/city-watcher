@@ -152,7 +152,7 @@ h3 {
   }
 }
 
-.projects {
+.available-projects {
   font-size: .9em;
 
   article {
@@ -170,7 +170,7 @@ h3 {
   }
 }
 
-.builds {
+.available-builds {
   li {
     @include build(#575757);
     cursor: pointer;

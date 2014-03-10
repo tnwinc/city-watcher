@@ -1,19 +1,30 @@
-{{#each}}
-  <article {{bind-attr class="status running"}}>
-    <figure></figure>
-    <section>
-      <p>{{branchName}}</p>
-      {{#if running}}
-        {{progress-bar value=percentageComplete}}
-      {{/if}}
-    </section>
-  </article>
-{{else}}
-  <section class="no-builds">
-    <p>No builds to show</p>
-    <p>TeamCity may be down</p>
+{{#if hasError}}
+  <section class="builds-error">
+    <h3>Error retrieving builds</h3>
+    <p>Possible causes:</p>
+    <ul>
+      <li>TeamCity is down or restarting</li>
+      <li>This computer is not on the same network as TeamCity</li>
+    </ul>
   </section>
-{{/each}}
+{{else}}
+  {{#each}}
+    <article {{bind-attr class="status running"}}>
+      <figure></figure>
+      <section>
+        <p>{{branchName}}</p>
+        {{#if running}}
+          {{progress-bar value=percentageComplete}}
+        {{/if}}
+      </section>
+    </article>
+  {{else}}
+    <section class="no-builds">
+      <h3>No builds</h3>
+      <p>Only builds from the last day are shown</p>
+    </section>
+  {{/each}}
+{{/if}}
 
 {{#link-to 'configure' class="link-to-configure"}}
   <i class="fa fa-cog"></i>

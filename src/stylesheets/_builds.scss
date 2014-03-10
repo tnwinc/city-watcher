@@ -68,8 +68,21 @@
   }
 }
 
+.builds-error,
 .no-builds {
-  text-align: center;
+  color: #d3d3d3;
+  margin: 15px;
+
+  h3 {
+    color: #FFF;
+    font-size: 1.1em;
+  }
+
+  li {
+    line-height: 1.5;
+    list-style: disc;
+    margin-left: 25px;
+  }
 }
 
 a.link-to-configure {

@@ -31,11 +31,11 @@
   {{input value=buildFilter}}
 </fieldset>
 
-<div class="projects">
+<div class="available-projects">
   {{#each projectsAndBuilds}}
     <article>
       <h4>{{name}}</h4>
-      <ul class="builds">
+      <ul class="available-builds">
         {{#each builds}}
           <li {{action 'addSelectedBuild' this}}>
             <i class="fa fa-plus"></i>

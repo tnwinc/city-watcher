@@ -1,30 +1,40 @@
 App.BuildsRoute = App.Route.extend
 
-  model: ->
-    selectedBuilds = App.settings.getValue 'builds'
-    App.teamCity.getActiveBuilds(selectedBuilds).catch -> []
-
-  setupController: (controller, model)->
-    @_super controller, model
-    @_listenForBuildUpdates model
+  setupController: (controller)->
+    @_getActiveBuilds()
+      .then (builds)=>
+        controller.set 'model', builds
+        controller.set 'hasError', false
+        @_listenForBuildUpdates controller, controller.get('model')
+      .catch ->
+        controller.set 'model', []
+        controller.set 'hasError',  true
+        @_listenForBuildUpdates controller, controller.get('model')
 
   deactivate: ->
     clearInterval @get('updateInterval')
 
-  _listenForBuildUpdates: (model)->
+  _getActiveBuilds: ->
+    selectedBuilds = App.settings.getValue 'builds'
+    App.teamCity.getActiveBuilds selectedBuilds
+
+  _listenForBuildUpdates: (controller, model)->
     @set 'updateInterval', setInterval =>
-      builds = App.settings.getValue 'builds'
-      App.teamCity.getActiveBuilds(builds).then (newBuilds)=>
-        @_purgeOldBuilds model, newBuilds
-        for newBuild in newBuilds
-          currentBuild = _.find model, (currentBuild)->
-            newBuild.get('id') is currentBuild.get('id')
-          if currentBuild
-            props = ['running', 'percentageComplete', 'status']
-            diff = @_buildsDiff currentBuild, newBuild, props
-            currentBuild.setProperties diff
-          else
-            model.addObject newBuild
+      @_getActiveBuilds()
+        .then (newBuilds)=>
+          model.set 'hasError', false
+          @_purgeOldBuilds model, newBuilds
+          for newBuild in newBuilds
+            currentBuild = _.find model, (currentBuild)->
+              newBuild.get('id') is currentBuild.get('id')
+            if currentBuild
+              props = ['running', 'percentageComplete', 'status']
+              diff = @_buildsDiff currentBuild, newBuild, props
+              currentBuild.setProperties diff
+            else
+              model.addObject newBuild
+        .catch ->
+          controller.set 'hasError', true
     , 5000
 
   _purgeOldBuilds: (model, newBuilds)->
