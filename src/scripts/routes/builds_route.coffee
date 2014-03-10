@@ -6,7 +6,7 @@ App.BuildsRoute = App.Route.extend
         controller.set 'model', builds
         controller.set 'hasError', false
         @_listenForBuildUpdates controller, controller.get('model')
-      .catch ->
+      .catch =>
         controller.set 'model', []
         controller.set 'hasError',  true
         @_listenForBuildUpdates controller, controller.get('model')
