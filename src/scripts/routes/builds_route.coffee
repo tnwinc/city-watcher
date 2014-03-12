@@ -22,7 +22,7 @@ App.BuildsRoute = App.Route.extend
     @set 'updateInterval', setInterval =>
       @_getActiveBuilds()
         .then (newBuilds)=>
-          model.set 'hasError', false
+          controller.set 'hasError', false
           @_purgeOldBuilds model, newBuilds
           for newBuild in newBuilds
             currentBuild = _.find model, (currentBuild)->
