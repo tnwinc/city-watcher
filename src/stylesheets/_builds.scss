@@ -18,15 +18,28 @@ $progress-bar-height: 24px;
 
     $figure-size: 32px;
 
+    figure,
+    i {
+      box-sizing: border-box;
+      float: left;
+      margin-top: 5px;
+      width: $figure-size;
+      height: $figure-size;
+    }
+
     figure {
       background-color: #e3e3e3;
       background-image: linear-gradient(145deg, rgba(255,255,255,0.2), transparent);
       border: solid 3px;
       border-radius: 50%;
-      float: left;
-      margin-top: 5px;
-      width: $figure-size - 6;
-      height: $figure-size - 6;
+    }
+
+    i {
+      color: #c7c7c7;
+      display: none;
+      font-size: 1.6em;
+      line-height: $figure-size;
+      text-align: center;
     }
 
     &.success figure {
@@ -38,6 +51,16 @@ $progress-bar-height: 24px;
     &.error figure {
       background-color: $error-color;
       border-color: darken($error-color, 20%);
+    }
+
+    &.queued {
+      figure {
+        display: none;
+      }
+
+      i {
+        display: block;
+      }
     }
 
     section {

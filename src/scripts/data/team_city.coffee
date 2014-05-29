@@ -37,34 +37,57 @@ TeamCity = Ember.Object.extend
       getBuilds.catch -> resolve []
 
   getActiveBuilds: (builds)->
-    sinceDate = (moment().subtract 'days', 1).format 'YYYYMMDDTHHmmssZZ'
-    runningBuilds = _.map builds, (build)=>
-      query = "\
-        builds?\
-          locator=running:all,\
-          branch:branched:any,\
-          buildType:#{build.id},\
-          sinceDate:#{sinceDate}\
-      "
-      @queryTeamCity(query).then (data)->
-        uniqueBuilds = _.uniq data.build, (build)-> build.branchName
+    buildPromises =
+      running: @_runningBuilds builds
+      queued: @_queuedBuilds builds
 
-        name: build.name
-        builds: _.filter uniqueBuilds, (build)->
-          build.status isnt 'UNKNOWN' and build.branchName isnt '<default>'
-
-    Ember.RSVP.all(runningBuilds).then (buildTypes)->
-      _.flatten _.map buildTypes, (buildType)->
+    Ember.RSVP.hash(buildPromises).then (result)->
+      _.flatten _.map result.running, (buildType)->
         _.map buildType.builds, (activeBuild)->
           parentBuild = _.find builds, (build)->
             build.id is activeBuild.buildTypeId
+
+          status = if _.contains result.queued, activeBuild.buildTypeId
+            'queued'
+          else
+            activeBuild.status.toLowerCase()
 
           Ember.Object.create
             id: activeBuild.id
             running: !!activeBuild.running
             percentageComplete: activeBuild.percentageComplete
             branchName: (activeBuild.branchName || buildType.name).replace 'refs/heads/', ''
-            status: activeBuild.status.toLowerCase()
+            status: status
             order: parentBuild.order
+
+  _runningBuilds: (builds)->
+    sinceDate = (moment().subtract 'days', 1).format 'YYYYMMDDTHHmmssZZ'
+
+    running = _.map builds, (build)=>
+      query = "\
+        builds?\
+          locator=running:any,\
+          branch:branched:any,\
+          buildType:#{build.id},\
+          sinceDate:#{sinceDate}\
+      "
+
+      @queryTeamCity(query).then (data)=>
+        uniqueBuilds = _.uniq data.build, (build)-> build.branchName
+
+        name: build.name
+        builds: _.filter uniqueBuilds, (build)->
+          build.status isnt 'UNKNOWN' and build.branchName isnt '<default>'
+
+    Ember.RSVP.all running
+
+  _queuedBuilds: (builds)->
+    queued = _.map builds, (build)=>
+      @queryTeamCity("buildQueue?locator=buildType:#{build.id}").then (data)->
+        return null unless data.count
+        _.pluck data.build, 'buildTypeId'
+
+    Ember.RSVP.all(queued).then (result)->
+      _.compact result
 
 App.teamCity = TeamCity.create()
