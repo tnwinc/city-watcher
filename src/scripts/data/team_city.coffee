@@ -88,6 +88,6 @@ TeamCity = Ember.Object.extend
         _.pluck data.build, 'buildTypeId'
 
     Ember.RSVP.all(queued).then (result)->
-      _.compact result
+      _.flatten _.compact result
 
 App.teamCity = TeamCity.create()
