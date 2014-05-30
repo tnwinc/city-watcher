@@ -47,7 +47,7 @@ TeamCity = Ember.Object.extend
           parentBuild = _.find builds, (build)->
             build.id is activeBuild.buildTypeId
 
-          status = if _.contains result.queued, activeBuild.buildTypeId
+          status = if _.contains(result.queued, activeBuild.buildTypeId) and not activeBuild.running
             'queued'
           else
             activeBuild.status.toLowerCase()
