@@ -1,33 +1,24 @@
 TeamCity = Ember.Object.extend
 
   init: ->
-    @set 'host', App.settings.getValue 'host', 'carbon-scrum'
+    @set 'host', App.settings.getValue 'host'
 
   updateHost: (host)->
     @set 'host', host
     App.settings.updateString 'host', host
 
-  urlWithHost: (host)->
-    "http://#{host}/guestAuth/app/rest/"
-
   baseUrl: (->
-    @urlWithHost @get('host')
+    @_urlWithHost @get('host')
   ).property 'host'
 
-  queryTeamCity: (url, baseUrl = @get('baseUrl'))->
-    new Ember.RSVP.Promise (resolve, reject)=>
-      $.getJSON "#{baseUrl}#{url}"
-        .then (value)-> resolve value
-        .fail (error)-> reject error
-
   getBuild: (id)->
-    @queryTeamCity "builds/id:#{id}"
+    @_queryTeamCity url: "builds/id:#{id}"
 
   getAllBuilds: (host)->
     new Ember.RSVP.Promise (resolve)=>
       return resolve [] unless host
 
-      getBuilds = @queryTeamCity('buildTypes', @urlWithHost host)
+      getBuilds = @_queryTeamCity(url: 'buildTypes', baseUrl: @_urlWithHost host)
 
       getBuilds.then (result)->
         builds = _.map result.buildType, (buildType)->
@@ -60,19 +51,29 @@ TeamCity = Ember.Object.extend
             status: status
             order: parentBuild.order
 
+  _urlWithHost: (host)->
+    "http://#{host}/guestAuth/app/rest/"
+
+  _queryTeamCity: (options = {})->
+    options = _.defaults options, baseUrl: @get('baseUrl'), locator: ''
+    locator = options.locator and "?locator=#{@_serializeLocator options.locator}"
+    new Ember.RSVP.Promise (resolve, reject)=>
+      $.getJSON "#{options.baseUrl}#{options.url}#{locator}"
+        .then (value)-> resolve value
+        .fail (error)-> reject error
+
+  _serializeLocator: (locator)->
+    _.map(locator, (value, key)-> "#{key}:#{value}").join(',')
+
   _runningBuilds: (builds)->
-    sinceDate = (moment().subtract 'days', 1).format 'YYYYMMDDTHHmmssZZ'
-
     running = _.map builds, (build)=>
-      query = "\
-        builds?\
-          locator=running:any,\
-          branch:branched:any,\
-          buildType:#{build.id},\
-          sinceDate:#{sinceDate}\
-      "
+      locator =
+        running: 'any'
+        branch: 'branched:any'
+        buildType: build.id
+        sinceDate: moment().subtract('days', 1).format 'YYYYMMDDTHHmmssZZ'
 
-      @queryTeamCity(query).then (data)=>
+      @_queryTeamCity(url: 'builds', locator: locator).then (data)=>
         uniqueBuilds = _.uniq data.build, (build)-> build.branchName
 
         name: build.name
@@ -83,7 +84,7 @@ TeamCity = Ember.Object.extend
 
   _queuedBuilds: (builds)->
     queued = _.map builds, (build)=>
-      @queryTeamCity("buildQueue?locator=buildType:#{build.id}").then (data)->
+      @_queryTeamCity(url: 'buildQueue', locator: buildType: build.id).then (data)->
         return null unless data.count
         _.pluck data.build, 'buildTypeId'
 
