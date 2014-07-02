@@ -4,4 +4,4 @@
 tmp
 node_modules
 _dev
-_build
+_prod
