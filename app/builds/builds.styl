@@ -121,22 +121,51 @@ progress-bar-height = 24px;
   }
 }
 
-a.link-to-configure {
-  color: rgba(255,255,255,0.8);
-  display: block;
-  padding: 10px;
+configure-size = 42px;
+
+.configure-surface {
   position: absolute;
   top: 0;
   right: 0;
-  width: 80px;
-  height: 80px;
+  width: configure-size;
+  height: configure-size;
 
-  i {
+  .editing & {
     display: none;
-    float: right;
+  }
+}
+
+a.configure-builds {
+  &:before {
+    border-top: solid 25px rgba(255,255,255,0.3);
+    border-right: solid 25px rgba(255,255,255,0.3);
+    border-bottom: solid 25px transparent;
+    border-left: solid 25px transparent;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
   }
 
-  &:hover i {
-    display: inline;
+  color: rgba(255,255,255,0.5);
+  display: none;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  width: configure-size - 14;
+  height: configure-size - 14;
+  line-height: configure-size - 14;
+
+  &:hover,
+  &:focus {
+    color: rgba(255,255,255,0.8);
   }
+}
+
+.configure-surface:hover a.configure-builds {
+  display: block;
 }
