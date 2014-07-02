@@ -1,32 +1,26 @@
 {
-  "name": "CityWatcher",
+  "name": "city-watcher",
   "version": "0.1.0",
   "dependencies": {
-    "gulp": "*",
-    "through2": "*",
-    "event-stream": "*",
-    "glob": "*",
-    "rsvp": "*",
-    "connect": "*",
-    "underscore": "*",
-    "handlebars": "*",
-    "gulp-util": "*",
-    "gulp-clean": "*",
-    "gulp-rename": "*",
-    "gulp-watch": "*",
-    "gulp-plumber": "*",
-    "gulp-concat": "*",
-    "gulp-sass": "*",
-    "gulp-minify-css": "*",
-    "gulp-coffee": "*",
-    "gulp-uglify": "*",
-    "ember-precompile": "*",
-    "coffee-script": "*"
+    "lodash": "~2.4.1",
+    "moment": "~2.7.0"
   },
-  "scripts": {
-    "dev": "./node_modules/gulp/bin/gulp.js dev --require coffee-script/register",
-    "clean": "./node_modules/gulp/bin/gulp.js clean --require coffee-script/register",
-    "prod": "./node_modules/gulp/bin/gulp.js prod --require coffee-script/register",
-    "deploy": "./node_modules/gulp/bin/gulp.js deploy --require coffee-script/register"
+  "devDependencies": {
+    "gulp": "~3.8.5",
+    "handlebars": "~1.1.2",
+    "jquery": "~2.1.1",
+    "zunder": "~0.1.0"
+  },
+  "browser": {
+    "ember": "./app/vendor/ember.js"
+  },
+  "browserify-shim": {
+    "ember": {
+      "exports": "Ember",
+      "depends": [
+        "jquery:jQuery",
+        "handlebars:Handlebars"
+      ]
+    }
   }
 }
