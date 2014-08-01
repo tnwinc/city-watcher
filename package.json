@@ -9,7 +9,7 @@
     "gulp": "~3.8.5",
     "handlebars": "~1.1.2",
     "jquery": "~2.1.1",
-    "zunder": "~0.1.1"
+    "zunder": "~0.3.2"
   },
   "browser": {
     "ember": "./app/vendor/ember.js"
