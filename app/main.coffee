@@ -1,13 +1,9 @@
 App = require './app'
 
-require './services/store'
-require './services/teamcity'
+require './services/services'
+require './components/components'
 
-require './components/progress_bar_component'
-require './components/components.progress-bar'
-require './components/sortable_list_component'
-require './components/components.sortable-list'
-
+require './application/route'
 require './index/route'
 require './builds/route'
 require './configure/route'

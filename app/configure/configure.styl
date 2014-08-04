@@ -103,7 +103,7 @@ h3 {
     }
 
     .project-name {
-      background: rgba(255,255,255,0.2);
+      background: #749bbe;
       border-radius: 3px 0 0 3px;
       display: block;
       float: left;
@@ -112,6 +112,11 @@ h3 {
       position: relative;
       top: -3px;
       left: -5px;
+    }
+
+    .project-annotation {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: .9em;
     }
 
     a {
@@ -126,6 +131,24 @@ h3 {
 
       &:hover {
         opacity: 1.0;
+      }
+    }
+
+    &.build {
+      .project-annotation {
+        display: none;
+      }
+    }
+
+    &.project {
+      background: #749bbe;
+
+      .project-name {
+        display: none;
+      }
+
+      .name {
+        padding-left: 5px;
       }
     }
   }
@@ -152,31 +175,39 @@ h3 {
   }
 }
 
+availableBuild() {
+  border-radius: 3px;
+  cursor: cell;
+  line-height: 1.5;
+  margin: 2px 0;
+  padding: 3px 5px;
+
+  &:hover {
+    background: lighten(#575757, 10%);
+  }
+}
+
 .available-projects {
   font-size: .9em;
 
   article {
     clearfix();
+    padding: 3px;
   }
 
   h4 {
+    availableBuild();
     float: left;
     text-align: right;
     width: 24%;
   }
 
   ul {
-    margin-left: 28%;
+    margin: 0 0 0 28%;
   }
-}
 
-.available-builds {
   li {
-    build(#575757);
-    cursor: pointer;
-
-    &:hover {
-      background: lighten(#575757, 10%);
-    }
+    availableBuild()
+    color: #d3d3d3;
   }
 }

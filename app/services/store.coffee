@@ -10,8 +10,22 @@ Store = Ember.Object.extend
     @data[key]
 
   save: (key, value)->
-    @data[key] = value
+    if typeof key is 'string'
+      value = @_setValue key, value
+    else
+      for itemKey, itemValue of key
+        @_setValue itemKey, itemValue
+      value = key
+
     localStorage[App.NAMESPACE] = JSON.stringify @data
+    value
+
+  _setValue: (key, value)->
+    if value is null
+      value = @data[key]
+      delete @data[key]
+    else
+      @data[key] = value
     value
 
 Ember.Application.initializer

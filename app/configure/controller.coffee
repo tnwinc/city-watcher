@@ -4,39 +4,41 @@ _ = require 'lodash'
 
 App.ConfigureController = Ember.Controller.extend
 
-  buildFilter: ''
+  runnerFilter: ''
   errors: []
 
-  unselectedBuilds: (->
-    selectedBuilds = @get 'selectedBuilds.content'
-    _.reject @get('builds'), (build)->
-      _.find selectedBuilds, (selectedBuild)->
-        selectedBuild.get('id') is build.get('id')
-  ).property 'builds.@each', 'selectedBuilds.content.@each'
+  unselectedRunners: (->
+    selectedRunners = @get 'selectedRunners.content'
+    _.reject @get('builds'), (runner)->
+      _.find selectedRunners, (selectedRunner)->
+        selectedRunnerId = selectedRunner.get 'id'
+        selectedRunnerId is runner.get('id') or selectedRunnerId is runner.get('projectId')
+  ).property 'builds.@each', 'selectedRunners.content.@each'
 
-  filteredBuilds: (->
-    filter = @get('buildFilter').toLowerCase()
-    _.filter @get('unselectedBuilds'), (build)->
+  filteredRunners: (->
+    filter = @get('runnerFilter').toLowerCase()
+    _.filter @get('unselectedRunners'), (build)->
       buildName = build.get('name').toLowerCase()
       projectName = build.get('projectName').toLowerCase()
       buildName.indexOf(filter) >= 0 or projectName.indexOf(filter) >= 0
-  ).property 'unselectedBuilds.@each', 'buildFilter'
+  ).property 'unselectedRunners.@each', 'runnerFilter'
 
-  projectsAndBuilds: (->
-    projects = _.groupBy @get('filteredBuilds'), (build)->
+  runners: (->
+    projects = _.groupBy @get('filteredRunners'), (build)->
       build.get('projectId')
 
     _.map projects, (builds, id)->
-      id: id
-      name: builds[0].get('projectName')
-      builds: builds
-  ).property 'filteredBuilds.@each'
+      Ember.Object.create
+        id: id
+        name: builds[0].get('projectName')
+        builds: builds
+  ).property 'filteredRunners.@each'
 
   hasErrors: Ember.computed.notEmpty 'errors'
 
-  hasSelectedBuilds: (->
-    !!@get 'selectedBuilds.length'
-  ).property 'selectedBuilds.@each'
+  hasSelectedRunners: (->
+    !!@get 'selectedRunners.length'
+  ).property 'selectedRunners.@each'
 
   _hostUpdated: (->
     @_updateBuilds()
@@ -52,26 +54,42 @@ App.ConfigureController = Ember.Controller.extend
     errors = @get 'errors'
     if _.isEmpty @get('host')
       errors.addObject 'You must input a host'
-    if _.isEmpty @get('selectedBuilds.content')
+    if _.isEmpty @get('selectedRunners.content')
       errors.addObject 'You must add at least one build'
+
+  _addRunner: (runner, type)->
+    runner.set 'order', @get 'selectedRunners.length'
+    runner.set 'type', type
+    @get('selectedRunners').addObject runner
+
+  _removeSelectedBuildsForProject: (project)->
+    selectedRunners = @get 'selectedRunners.content'
+    selectedBuilds = _.filter selectedRunners, (runner)-> runner.get('type') is 'build'
+    buildsInProject = _.filter selectedBuilds, (build)-> build.get('projectId') is project.get('id')
+    _.each buildsInProject, (build)->
+      selectedRunners.removeObject build
 
   actions:
 
+    addSelectedProject: (project)->
+      @_removeSelectedBuildsForProject project
+      project.set 'builds', null
+      @_addRunner project, 'project'
+
     addSelectedBuild: (build)->
-      build.set 'order', @get 'selectedBuilds.length'
-      @get('selectedBuilds').addObject build
+      @_addRunner build, 'build'
 
-    removeSelectedBuild: (build)->
-      @get('selectedBuilds').removeObject build
+    removeSelectedRunner: (runner)->
+      @get('selectedRunners').removeObject runner
 
-    didSortSelectedBuilds: (order)->
+    didSortSelectedRunners: (order)->
       @beginPropertyChanges()
-      _.each @get('selectedBuilds.content'), (selectedBuild)->
+      _.each @get('selectedRunners.content'), (selectedBuild)->
         selectedBuild.set 'order', order[selectedBuild.get('id')]
       @endPropertyChanges()
 
-    toggleCollapseSelectedBuilds: ->
-      @toggleProperty 'collapseSelectedBuilds'
+    toggleCollapseSelectedRunners: ->
+      @toggleProperty 'collapseSelectedRunners'
       return
 
     clearErrors: ->
@@ -82,7 +100,7 @@ App.ConfigureController = Ember.Controller.extend
       return if @get 'errors.length'
 
       @teamcity.updateHost @get('host')
-      @store.save 'builds', @get('selectedBuilds.content')
+      @store.save 'runners', @get('selectedRunners.content')
 
       attemptedTransition = @get 'attemptedTransition'
       if attemptedTransition and attemptedTransition.targetName isnt 'configure'

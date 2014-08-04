@@ -12,12 +12,12 @@ App.ConfigureRoute = Ember.Route.extend
     host = @store.fetch 'host'
     controller.set 'host', host
 
-    selectedBuilds = _.map @store.fetch('builds') or [], (selectedBuild)->
-      Ember.Object.create selectedBuild
-    sortableSelectedBuilds = Ember.ArrayProxy.createWithMixins Ember.SortableMixin,
-      content: selectedBuilds
+    selectedRunners = _.map @store.fetch('runners') or [], (selectedRunner)->
+      Ember.Object.create selectedRunner
+    sortableSelectedRunners = Ember.ArrayProxy.createWithMixins Ember.SortableMixin,
+      content: selectedRunners
       sortProperties: ['order']
-    controller.set 'selectedBuilds', sortableSelectedBuilds
+    controller.set 'selectedRunners', sortableSelectedRunners
 
     @teamcity.getAllBuilds(host).then (builds)->
       controller.set 'builds', builds

@@ -3,6 +3,7 @@ App = require '../app'
 $ = require 'jquery'
 
 require '../vendor/jquery-ui.sortable'
+require './components.sortable-list'
 
 App.SortableListComponent = Ember.Component.extend
 

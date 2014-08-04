@@ -23,7 +23,8 @@ App.BuildsRoute = BaseRoute.extend
     clearInterval @get('updateInterval')
 
   _getActiveBuilds: ->
-    selectedBuilds = @store.fetch 'builds'
+    selectedBuilds = _.filter @store.fetch('runners'), (runner)->
+      runner.type is 'build'
     @teamcity.getActiveBuilds selectedBuilds
 
   _listenForBuildUpdates: (controller, model)->

@@ -2,19 +2,20 @@
 {{input value=host}}
 
 <h3>
-  Builds
-  <a href="#" class="toggle-collapse-selected" {{action 'toggleCollapseSelectedBuilds'}}>
-    <i {{bind-attr class="collapseSelectedBuilds:fa-caret-down:fa-caret-up :fa"}}></i>
+  Runners
+  <a href="#" class="toggle-collapse-selected" {{action 'toggleCollapseSelectedRunners'}}>
+    <i {{bind-attr class="collapseSelectedRunners:fa-caret-down:fa-caret-up :fa"}}></i>
   </a>
 </h3>
 
-{{#if hasSelectedBuilds}}
-  <ul {{bind-attr class="collapseSelectedBuilds:collapsed :selected-builds"}}>
-    {{#sortable-list tagName="ul" class="selected-builds" itemTag="li" items=selectedBuilds onUpdate="didSortSelectedBuilds"}}
-      <li {{bind-attr data-id=id}}>
+{{#if hasSelectedRunners}}
+  <ul {{bind-attr class="collapseSelectedRunners:collapsed :selected-builds"}}>
+    {{#sortable-list tagName="ul" class="selected-builds" itemTag="li" items=selectedRunners onUpdate="didSortSelectedRunners"}}
+      <li {{bind-attr data-id=id class=type}}>
         <span class="project-name">{{projectName}}</span>
-        <span>{{name}}</span>
-        <a href="#" {{action 'removeSelectedBuild' this}}>
+        <span class="name">{{name}}</span>
+        <span class="project-annotation">(project)</span>
+        <a href="#" {{action 'removeSelectedRunner' this}}>
           <i class="fa fa-times"></i>
         </a>
       </li>
@@ -28,19 +29,16 @@
 
 <fieldset class="build-filter">
   <i class="fa fa-search"></i>
-  {{input value=buildFilter}}
+  {{input value=runnerFilter}}
 </fieldset>
 
 <div class="available-projects">
-  {{#each projectsAndBuilds}}
+  {{#each runners}}
     <article>
-      <h4>{{name}}</h4>
+      <h4 {{action 'addSelectedProject' this}}>{{name}}</h4>
       <ul class="available-builds">
         {{#each builds}}
-          <li {{action 'addSelectedBuild' this}}>
-            <i class="fa fa-plus"></i>
-            {{name}}
-          </li>
+          <li {{action 'addSelectedBuild' this}}>{{name}}</li>
         {{/each}}
       </ul>
     </article class="project">
