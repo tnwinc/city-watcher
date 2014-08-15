@@ -7,6 +7,8 @@ module.exports = Ember.Object.extend
       store = @get 'store'
       builds = store.fetch 'builds'
 
+      return resolve() unless builds?
+
       runners = for build in builds
         build.type = 'build'
         build
