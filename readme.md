@@ -1,3 +1,6 @@
+# Archive Note
+This repo is obsolete, so it is being archived.
+
 ## City Watcher
 
 Monitor the status of TeamCity builds.
